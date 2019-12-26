@@ -1,0 +1,20 @@
+{
+  "name": "react-i18n-chain",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:fwh1990/react-i18n-chain.git",
+  "author": "范文华 <531362022@qq.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">= 15.3.0"
+  },
+  "dependencies": {
+    "hoist-non-react-statics": "^3.3.1",
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/hoist-non-react-statics": "^3.3.1",
+    "@types/react": "^16.9.17",
+    "typescript": "^3.7.4"
+  }
+}

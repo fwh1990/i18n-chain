@@ -1,0 +1,10 @@
+{
+  "javascript.preferences.quoteStyle": "single",
+  "html.format.endWithNewline": true,
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "auto-close-tag.activationOnLanguage": [
+    "javascriptreact",
+    "typescriptreact"
+  ]
+}
