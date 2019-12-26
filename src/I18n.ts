@@ -55,9 +55,11 @@ export class I18n<T extends object> {
       this.currentLanguageName = key;
 
       this.loader(key).then((response) => {
-        this.define(key, response);
+        const locale = response && response.__esModule ? response.default : response;
+
+        this.define(key, locale);
         if (this.currentLanguageName === key) {
-          this.publish(response);
+          this.publish(locale);
         }
       }).catch((error) => {
         console.error(error.message);
@@ -136,23 +138,3 @@ export class I18n<T extends object> {
     this.listeners.forEach((listener) => listener());
   }
 }
-
-const i18n = new I18n({
-  defaultLanguage: {
-    key: 'cn',
-    values: {
-      hi: {
-        hello: '你好'
-      },
-      cool: 0,
-      ggg: {
-        ccc: {
-          zzz: ''
-        }
-      }
-    },
-  },
-  loader: (key) => import(`../locales/${key}`),
-});
-
-i18n.data.ggg.ccc.zzz
