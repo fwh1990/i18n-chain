@@ -54,6 +54,42 @@ const i18n = new I18n({
 export default i18n;
 ```
 
+# Use i18n with React-Hooks
+
+```typescript jsx
+// ./src/components/App.ts
+
+import React, { FC } from 'react';
+import { useI18n } from 'react-i18n-chain';
+import i18n from '../i18n';
+
+const App: FC = () => {
+  // For re-render when i18n switch locale
+  useI18n(i18n);
+
+  return <button>{i18n.chain.button.submit}</button>;
+};
+
+export default App;
+```
+
+# Use i18n with React-Component
+
+```typescript jsx
+// ./src/components/App.ts
+
+import React, { FC } from 'react';
+import { I18nProvider } from 'react-i18n-chain';
+import i18n from '../i18n';
+
+const App: FC = () => {
+  return <button>{i18n.chain.button.submit}</button>;
+};
+
+// For re-render when i18n switch locale
+export default I18nProvider(i18n)(App);
+```
+
 # Switch locale
 Here is two way to switch your locale language:
 
@@ -85,42 +121,6 @@ export default i18n;
 Now, we can switch locale by method:
 ```typescript
 i18n.use('zh');
-```
-
-# Use i18n with React-Hooks
-
-```typescript jsx
-// ./src/components/App.ts
-
-import React, { FC } from 'react';
-import { useI18n } from 'react-i18n-chain';
-import i18n from '../i18n';
-
-const App: FC = () => {
-  // To re-render when i18n switch locale
-  useI18n(i18n);
-
-  return <button>{i18n.chain.button.submit}</button>;
-};
-
-export default App;
-```
-
-# Use i18n with React-Component
-
-```typescript jsx
-// ./src/components/App.ts
-
-import React, { FC } from 'react';
-import { I18nProvider } from 'react-i18n-chain';
-import i18n from '../i18n';
-
-const App: FC = () => {
-  return <button>{i18n.chain.button.submit}</button>;
-};
-
-// To re-render when i18n switch locale
-export default I18nProvider(i18n)(App);
 ```
 
 # Template with parameters
