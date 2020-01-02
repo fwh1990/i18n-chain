@@ -41,15 +41,13 @@ type ParameterType<T> = T extends undefined
 type Locale<U extends object> = {
   [key in keyof U]: U[key] extends Array<any>
     ? Extract<U[key][number], object> extends infer R
-      ? (
-        params: NoDefault<R> extends never
-          ? HasDefault<R> extends never
-            ? never
-            : { [p in HasDefault<R>]?: ParameterType<R[p]> }
-          : HasDefault<R> extends never
-            ? { [p in NoDefault<R>]: ParameterType<R[p]> }
-            : { [p in NoDefault<R>]: ParameterType<R[p]> } & { [p in HasDefault<R>]?: ParameterType<R[p]> }
-        ) => Exclude<U[key][0], object>
+      ? NoDefault<R> extends never
+        ? HasDefault<R> extends never
+          ? () => string
+          : (params?: { [p in HasDefault<R>]?: ParameterType<R[p]> }) => string
+        : HasDefault<R> extends never
+          ? (params: { [p in NoDefault<R>]: ParameterType<R[p]> }) => string
+          : (params: { [p in NoDefault<R>]: ParameterType<R[p]> } & { [p in HasDefault<R>]?: ParameterType<R[p]> }) => string
       : never
     : U[key] extends object
       ? Locale<U[key]>
@@ -57,9 +55,9 @@ type Locale<U extends object> = {
 };
 
 export class I18n<U extends object, T = Locale<U>> {
-  protected readonly defaultLocale: Language<U>;
+  protected readonly defaultLocale: U;
   protected readonly loader: I18nConfig<T>['loader'];
-  protected locales: Partial<Record<string, Language<U>['values']>> = {};
+  protected locales: Partial<Record<string, U>> = {};
   protected hashes: Partial<Record<string, string>> = {};
   // @ts-ignore
   protected current: U = {};
@@ -67,7 +65,7 @@ export class I18n<U extends object, T = Locale<U>> {
   protected listeners: ((localeName: string) => void)[] = [];
 
   constructor(config: I18nConfig<U>) {
-    this.defaultLocale = config.defaultLocale;
+    this.defaultLocale = config.defaultLocale.values;
     this.loader = config.loader;
 
     this
@@ -81,7 +79,7 @@ export class I18n<U extends object, T = Locale<U>> {
     return this;
   }
 
-  public locale(name: string): this {
+  public async locale(name: string): Promise<this> {
     if (name === this.currentName) {
       return this;
     }
@@ -95,19 +93,20 @@ export class I18n<U extends object, T = Locale<U>> {
     } else if (this.loader) {
       this.currentName = name;
 
-      this.loader(name).then((response) => {
+      try {
+        const response = await this.loader(name);
         const locale = response && response.__esModule ? response.default : response;
-
         this.define(name, locale);
         if (this.currentName === name) {
           this.publish(locale);
         }
-      }).catch((error) => {
-        console.error(error.message);
+      } catch (error) {
         if (this.currentName === name) {
           this.currentName = originalName;
         }
-      });
+
+        throw error;
+      }
     } else {
       console.error(`I18n can not find locale "${name}"`);
     }
@@ -204,7 +203,7 @@ export class I18n<U extends object, T = Locale<U>> {
             // Fallback to default locale
             proxyData = this.defaultLocale;
       
-            for (const name of allProperties) {
+            for (const name of newAllProperties) {
               proxyData = proxyData[name];
       
               if (proxyData === undefined) {
