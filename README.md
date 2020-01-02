@@ -120,7 +120,7 @@ export default i18n;
 
 Now, we can switch locale by method:
 ```typescript
-i18n.use('zh');
+i18n.locale('zh');
 ```
 
 # Template with parameters

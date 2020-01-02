@@ -53,7 +53,7 @@ export class I18n<U extends object, T = Locale<U>> {
 
     this
       .define(config.defaultLanguage.key, config.defaultLanguage.values)
-      .use(config.defaultLanguage.key);
+      .locale(config.defaultLanguage.key);
   }
 
   public define(key: string, values: U): this {
@@ -62,7 +62,7 @@ export class I18n<U extends object, T = Locale<U>> {
     return this;
   }
 
-  public use(key: string): this {
+  public locale(key: string): this {
     if (key === this.currentLanguageName) {
       return this;
     }
