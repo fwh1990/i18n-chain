@@ -115,6 +115,14 @@ export class I18n<U extends object, T = Locale<U>> {
     return this;
   }
 
+  public listen(fn: (localeName: string) => void): UnListen {
+    this.listeners.push(fn);
+
+    return () => {
+      this.listeners = this.listeners.filter((item) => item !== fn);
+    };
+  }
+
   public get chain(): T {
     // @ts-ignore
     return new Proxy(this, {
@@ -238,14 +246,6 @@ export class I18n<U extends object, T = Locale<U>> {
 
   protected isValidProperty(property: string | number | symbol): property is string {
     return property !== '$$typeof' && typeof property === 'string';
-  }
-
-  protected listen(fn: (localeName: string) => void): UnListen {
-    this.listeners.push(fn);
-
-    return () => {
-      this.listeners = this.listeners.filter((item) => item !== fn);
-    };
   }
 
   protected publish(values: U): void {

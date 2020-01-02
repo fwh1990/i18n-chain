@@ -19,7 +19,6 @@ export const I18nProvider = (...i18nList: I18n<any>[]) => {
 
       componentDidMount() {
         this.unListens = i18nList.map((i18n) => {
-          // @ts-ignore
           return i18n.listen(() => {
             this.setState({
               count: this.state.count + 1,
