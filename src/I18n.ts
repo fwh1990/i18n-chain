@@ -12,9 +12,31 @@ interface I18nConfig<T> {
   loader?: (key: string) => Promise<any>;
 }
 
-type HasDefault<T> = {[key in keyof T]: T[key] extends undefined ? never : key}[keyof T];
+type HasDefault<T> = {
+  [key in keyof T]: T[key] extends undefined 
+    ? never 
+    : T[key] extends (...args: infer P) => any 
+      ? undefined extends P[0]
+        ? key
+        : never 
+      : key
+    }[keyof T];
 
-type NoDefault<T> = {[key in keyof T]: T[key] extends undefined ? key : never}[keyof T];
+type NoDefault<T> = {
+  [key in keyof T]: T[key] extends undefined 
+    ? key 
+    : T[key] extends (...args: infer P) => any
+      ? undefined extends P[0]
+        ? never
+        : key 
+      : never
+}[keyof T];
+
+type ParameterType<T> = T extends undefined 
+  ? string | number
+  : T extends (...args: infer P) => any
+    ? P[0]
+    : T;
 
 type Locale<U extends object> = {
   [key in keyof U]: U[key] extends Array<any>
@@ -23,10 +45,10 @@ type Locale<U extends object> = {
         params: NoDefault<R> extends never
           ? HasDefault<R> extends never
             ? never
-            : { [p in HasDefault<R>]?: string | number }
+            : { [p in HasDefault<R>]?: ParameterType<R[p]> }
           : HasDefault<R> extends never
-            ? { [p in NoDefault<R>]: string | number }
-            : { [p in NoDefault<R>]: string | number } & { [p in HasDefault<R>]?: string | number }
+            ? { [p in NoDefault<R>]: ParameterType<R[p]> }
+            : { [p in NoDefault<R>]: ParameterType<R[p]> } & { [p in HasDefault<R>]?: ParameterType<R[p]> }
         ) => Exclude<U[key][0], object>
       : never
     : U[key] extends object
@@ -137,9 +159,19 @@ export class I18n<U extends object, T = Locale<U>> {
         const newParams = Object.assign({}, defaultParams, params);
 
         for (const key of Object.keys(newParams)) {
-          if (typeof newParams[key] === 'string' || typeof newParams[key] === 'number') {
-            message = message.replace(new RegExp(`\{\{${key}\}\}`, 'gm'), newParams[key]);
+          let replaceValue;
+
+          if (typeof newParams[key] === 'function') {
+            // Indeed, it's extends from defaultParams.
+            // It means that user doesn't input the value of this key, it only happens when Function has a default value.
+            replaceValue = newParams[key]();
+          } else if (typeof defaultParams[key] === 'function') {
+            replaceValue = defaultParams[key](newParams[key]);
+          } else {
+            replaceValue = newParams[key];
           }
+
+          message = message.replace(new RegExp(`\{\{${key}\}\}`, 'gm'), replaceValue);
         }
 
         return message;
