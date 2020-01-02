@@ -8,7 +8,7 @@ export interface UnListen {
 }
 
 interface I18nConfig<T> {
-  defaultLanguage: Language<T>;
+  defaultLocale: Language<T>;
   loader?: (key: string) => Promise<any>;
 }
 
@@ -35,62 +35,59 @@ type Locale<U extends object> = {
 };
 
 export class I18n<U extends object, T = Locale<U>> {
-  protected readonly defaultLanguage: Language<U>;
+  protected readonly defaultLocale: Language<U>;
   protected readonly loader: I18nConfig<T>['loader'];
-  protected languages: Partial<Record<string, Language<U>['values']>> = {};
+  protected locales: Partial<Record<string, Language<U>['values']>> = {};
   protected hashes: Partial<Record<string, string>> = {};
-  protected currentLanguageName: string = '';
   // @ts-ignore
-  protected currentLanguage: U = {};
-
-  protected listeners: ((locale: string) => void)[] = [];
-
-  protected caches: Record<string, ProxyConstructor> = {};
+  protected current: U = {};
+  protected currentName: string = '';
+  protected listeners: ((localeName: string) => void)[] = [];
 
   constructor(config: I18nConfig<U>) {
-    this.defaultLanguage = config.defaultLanguage;
+    this.defaultLocale = config.defaultLocale;
     this.loader = config.loader;
 
     this
-      .define(config.defaultLanguage.key, config.defaultLanguage.values)
-      .locale(config.defaultLanguage.key);
+      .define(config.defaultLocale.key, config.defaultLocale.values)
+      .locale(config.defaultLocale.key);
   }
 
-  public define(key: string, values: U): this {
-    this.languages[key] = values;
+  public define(localeName: string, values: U): this {
+    this.locales[localeName] = values;
 
     return this;
   }
 
-  public locale(key: string): this {
-    if (key === this.currentLanguageName) {
+  public locale(name: string): this {
+    if (name === this.currentName) {
       return this;
     }
 
-    const originalName = this.currentLanguageName;
-    const language = this.languages[key];
+    const originalName = this.currentName;
+    const language = this.locales[name];
 
     if (language) {
-      this.currentLanguageName = key;
+      this.currentName = name;
       this.publish(language);
     } else if (this.loader) {
-      this.currentLanguageName = key;
+      this.currentName = name;
 
-      this.loader(key).then((response) => {
+      this.loader(name).then((response) => {
         const locale = response && response.__esModule ? response.default : response;
 
-        this.define(key, locale);
-        if (this.currentLanguageName === key) {
+        this.define(name, locale);
+        if (this.currentName === name) {
           this.publish(locale);
         }
       }).catch((error) => {
         console.error(error.message);
-        if (this.currentLanguageName === key) {
-          this.currentLanguageName = originalName;
+        if (this.currentName === name) {
+          this.currentName = originalName;
         }
       });
     } else {
-      console.error(`I18n can not find language "${key}"`);
+      console.error(`I18n can not find locale "${name}"`);
     }
 
     return this;
@@ -109,11 +106,11 @@ export class I18n<U extends object, T = Locale<U>> {
         let result: any;
         let hasData: boolean = false;
 
-        if (target.currentLanguage[first]) {
+        if (target.current[first]) {
           hasData = true;
-          result = this.proxy(target.currentLanguage[first], [first], false);
-        } else if (target.defaultLanguage[first]) {
-          result = this.proxy(target.defaultLanguage[first], [first], true);
+          result = this.proxy(target.current[first], [first], false);
+        } else if (target.defaultLocale[first]) {
+          result = this.proxy(target.defaultLocale[first], [first], true);
           hasData = true;
         }
 
@@ -166,7 +163,7 @@ export class I18n<U extends object, T = Locale<U>> {
             }
       
             // Fallback to default language
-            proxyData = this.defaultLanguage;
+            proxyData = this.defaultLocale;
       
             for (const name of allProperties) {
               proxyData = proxyData[name];
@@ -199,7 +196,7 @@ export class I18n<U extends object, T = Locale<U>> {
     return property !== '$$typeof' && typeof property === 'string';
   }
 
-  protected listen(fn: (locale: string) => void): UnListen {
+  protected listen(fn: (localeName: string) => void): UnListen {
     this.listeners.push(fn);
 
     return () => {
@@ -208,7 +205,7 @@ export class I18n<U extends object, T = Locale<U>> {
   }
 
   protected publish(values: U): void {
-    this.currentLanguage = values;
-    this.listeners.forEach((listener) => listener(this.currentLanguageName));
+    this.current = values;
+    this.listeners.forEach((listener) => listener(this.currentName));
   }
 }
