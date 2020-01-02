@@ -7,6 +7,9 @@ npm install react-i18n-chain
 yarn add react-i18n-chain
 ```
 
+# Demo
+[Here is demo](https://github.com/easy-demo/react-i18n-demo)
+
 # Define locales
 ```typescript
 // ./src/i18n/locales/en.ts
