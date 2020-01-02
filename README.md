@@ -1,4 +1,4 @@
-Are you always copy and paste duplicate i18n code like `t('home:submit')` `t('common:something:success')`. It take working slowly, and you very very easy to make typo if you don't recheck words carefully.
+Are you always copy and paste duplicate i18n code like `t('home:submit')` `t('common:something:success')`. It take working slowly, and you are very easy to make typo if you don't recheck words carefully.
 
 I don't like that way, I prefer to write code as a chain like `i18n.chain.common.something.success` with `typescript` checking. So, why not try this package?
 
