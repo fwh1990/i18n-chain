@@ -96,44 +96,44 @@ export class I18n<U extends object, T = Locale<U>> {
   public get chain(): T {
     // @ts-ignore
     return new Proxy(this, {
-      get: (target, property) => {
+      get: (_, property) => {
         if (!this.isValidProperty(property)) {
           return undefined;
         }
 
         const properties: string[] = property.split('.');
-        const first = properties.shift()!;
+        const firstProperty = properties.shift()!;
         let result: any;
         let hasData: boolean = false;
 
-        if (target.current[first]) {
+        if (this.current[firstProperty]) {
           hasData = true;
-          result = this.proxy(target.current[first], [first], false);
-        } else if (target.defaultLocale[first]) {
-          result = this.proxy(target.defaultLocale[first], [first], true);
+          result = this.proxy(this.current[firstProperty], [firstProperty], false);
+        } else if (this.defaultLocale[firstProperty]) {
           hasData = true;
+          result = this.proxy(this.defaultLocale[firstProperty], [firstProperty], true);
         }
 
         if (hasData) {
-          for (const name of properties) {
-            result = result[name];
+          if (properties.length) {
+            for (const name of properties) {
+              result = result[name];
+            }
           }
 
           return result;
         }
 
-        console.error(`I18n can not find property "${property}"`);
-        // Or throw error
-        return property;
+        return this.notFound([property]);
       },
     });
   }
 
-  protected proxy(data: any, allProperties: string[], useDefault: boolean) {
+  protected proxy(data: any, allProperties: string[], useDefaultLocal: boolean) {
     if (Array.isArray(data)) {
       return (params: object): string => {
         let message: string = data[0];
-        const defaultParams: object = data[1]; 
+        const defaultParams: object = data[1];
         const newParams = Object.assign({}, defaultParams, params);
 
         for (const key of Object.keys(newParams)) {
@@ -152,42 +152,54 @@ export class I18n<U extends object, T = Locale<U>> {
           }
 
           const properties: string[] = property.split('.');
-          const first = properties.shift()!;
-          const newAllProperties = allProperties.concat(first);
-          let proxyData = target[first];
+          const firstProperty = properties.shift()!;
+          const newAllProperties = allProperties.concat(firstProperty);
+          let proxyData = target[firstProperty];
 
           if (proxyData === undefined) {
-            if (useDefault) {
-              // TODO: May be throw Error
-              return newAllProperties.join('.');
+            if (useDefaultLocal) {
+              return this.notFound(newAllProperties);
             }
       
-            // Fallback to default language
+            // Fallback to default locale
             proxyData = this.defaultLocale;
       
             for (const name of allProperties) {
               proxyData = proxyData[name];
       
               if (proxyData === undefined) {
-                // TODO: May be throw Error
-                return newAllProperties.join('.');
+                break;
               }
             }
 
-            // Found key in default language
-            useDefault = true;
+            if (proxyData === undefined) {
+              return this.notFound(newAllProperties);
+            }
+
+            // Found key in default locale
+            useDefaultLocal = true;
           }
           
-          let result = this.proxy(proxyData, newAllProperties, useDefault);
+          let result = this.proxy(proxyData, newAllProperties, useDefaultLocal);
 
-          for (const name of properties) {
-            result = result[name];
+          if (properties.length) {
+            for (const name of properties) {
+              result = result[name];
+            }
           }
 
           return result;
         },
       });
     }
+
+    return data;
+  }
+
+  protected notFound(properties: string[]): string {
+    const data = properties.join('.');
+
+    console.error(`I18n can't find property "${data}"`);
 
     return data;
   }
