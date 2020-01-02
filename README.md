@@ -1,3 +1,7 @@
+Are you always copy and paste duplicate i18n code like `t('home:submit')` `t('common:something:success')`. It take working slowly, and you very very easy to make typo if you don't recheck words carefully.
+
+I don't like that way, I prefer to write code as a chain like `i18n.chain.common.something.success` with `typescript` checking. So, why not try this package?
+
 # Installation
 ```bash
 # Npm
@@ -131,6 +135,9 @@ Now, we can switch locale by method:
 ```typescript
 i18n.locale('zh');
 ```
+
+# String literal
+Fell free to try `i18n.chain['button.submit']` and `i18n.chain.button.submit`, they have the same effect. Unfortunately, you can't enjoy type checking by using `chain['xx.yy.zz']`.
 
 # Template with parameters
 You are required to use array to define template when parameters exist.
