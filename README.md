@@ -137,7 +137,7 @@ i18n.locale('zh');
 ```
 
 # String literal
-Fell free to try `i18n.chain['button.submit']` and `i18n.chain.button.submit`, they have the same effect. Unfortunately, you can't enjoy type checking by using `chain['xx.yy.zz']`.
+Feel free to try `i18n.chain['button.submit']` and `i18n.chain.button.submit`, they have the same effect. Unfortunately, you can't enjoy type checking by using `chain['xx.yy.zz']`.
 
 # Template with parameters
 You are required to use array to define template when parameters exist.
