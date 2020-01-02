@@ -157,7 +157,8 @@ const en = {
         birthday: (value: Date) => {
           return value.toString();
         },
-      }],
+      },
+    ],
   },
 };
 
