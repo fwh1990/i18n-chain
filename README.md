@@ -133,27 +133,68 @@ i18n.locale('zh');
 You are required to use array to define template when parameters exist.
 ```javascript
 const en = {
-  property: ['{{key1}}template{{key2}}', { key1: value2, key2: value2 }],
+  property: ['{{property1}}template{{property2}}', { property1: value2, property2: value2 }],
 };
 ```
 
-The second element in array is an object that is default value of template. Set `undefined` to key if you have no default value, it means that this key will be considered as required.
+The second element in array is an object that is default value of template.
 
 ```typescript
 const en = {
   user: {
-    profile: ['My name is {{name}}, I am {{age}} years old now', { age: undefined, name: 'Tom' }],
+    profile: [
+      'My name is {{name}}, I born in {{country}}, I am {{age}} old now, my birthday is {{birthday}}',
+      {
+        country: undefined,
+        name: 'Tom',
+        age: (value: number = 20) => {
+          if (value <= 1) {
+            return `${value} year`;
+          } else {
+            return `${value} years`;
+          }
+        },
+        birthday: (value: Date) => {
+          return value.toString();
+        },
+      }],
   },
 };
 
-// The same as this definition:
-//
-// interface Profile {
-//   age: string | number;
-//   name?: string | number;
-// }
+////////////////////////////////////
+// The above code equivalent to definition below: (automatically)
+interface User {
+  Profile {
+    country: string | number;
+    name?: string;
+    birthday: Date;
+    age?: number;
+  }
+}
+/////////////////////////////////////
 
+// Minium configuration
 i18n.chain.user.profile({
-  age: 20, // Required
+  age: 20,
+  country: 'China',
 });
+
+// Append optional property `name`
+i18n.chain.user.profile({
+  age: 30,
+  country: 'Usa',
+  name: 'Lucy',
+});
+```
+
+The primary difference between method `age` and `birthday` is: `age` has default parameter `(value: number = 20) => {...}` but `birthday` doesn't have. It's optional to input value to property who has default parameter value on function.
+
+------------
+
+Set `undefined` to property if you want to force input value when invoking method.
+
+```typescript
+const en = {
+  template: ['Hello, {{world}}', { world: undefined }]
+};
 ```
