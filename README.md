@@ -20,13 +20,17 @@ const en = {
     profile: 'Tom',
   },
 };
+
+export default en;
+export type Locale = typeof en;
 ```
 
 ```typescript
 // ./src/i18n/locales/zh.ts
-import en from './en';
 
-const zh: typeof en = {
+import { Locale } from './en';
+
+const zh: Locale = {
   button: {
     submit: '提交',
     cancel: '返回',
@@ -35,6 +39,8 @@ const zh: typeof en = {
     profile: '原罪',
   },
 };
+
+export default zh;
 ```
 
 # Create i18n instance
