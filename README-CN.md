@@ -1,10 +1,8 @@
-**English** | [中文](https://github.com/fwh1990/react-i18n-chain/blob/master/README-CN.md)
+说到国际化，你是否也常年奔波于复制粘贴的重复劳动里？像 `t('home:submit')` `t('common:something:success')` 这些没有任何提示，需要脑子去记，不仅开发效率低，而且键盘敲快一点就容易打错字母，重点是你基本发现不了这种错误。
 
-Are you always copy and paste duplicate i18n code like `t('home:submit')` `t('common:something:success')`. It take working slowly, and you are very easy to make typo if you don't recheck words carefully.
+我更喜欢有提示的代码，利用`typescript`，我发明了一种使用链式操作的i18n组件，并拥有所有提示，就类似 `i18n.chain.common.something.success` 这种，代码可以自动补全，保证不会写错。
 
-I don't like that way, I prefer to write code as a chain like `i18n.chain.common.something.success` with `typescript` checking. So, why not try this package?
-
-# Installation
+# 安装
 ```bash
 # Npm
 npm install react-i18n-chain
@@ -13,10 +11,10 @@ npm install react-i18n-chain
 yarn add react-i18n-chain
 ```
 
-# Demo
-[Here is demo](https://github.com/easy-demo/react-i18n-demo)
+# 案例
+[点击这里](https://github.com/easy-demo/react-i18n-demo)
 
-# Define locales
+# 定义本地化文件
 ```typescript
 // ./src/i18n/locales/en.ts
 
@@ -52,7 +50,7 @@ const zh: Locale = {
 export default zh;
 ```
 
-# Create i18n instance
+# 创建i18n实例
 ```typescript
 // ./src/i18n/index.ts
 
@@ -69,7 +67,7 @@ const i18n = new I18n({
 export default i18n;
 ```
 
-# Use i18n with React-Hooks
+# 在React-Hooks中使用i18n
 
 ```typescript jsx
 // ./src/components/App.ts
@@ -79,7 +77,7 @@ import { useI18n } from 'react-i18n-chain';
 import i18n from '../i18n';
 
 const App: FC = () => {
-  // For re-render when i18n switch locale
+  // 切换语言时可以触发重渲染
   useI18n(i18n);
 
   return <button>{i18n.chain.button.submit}</button>;
@@ -88,7 +86,7 @@ const App: FC = () => {
 export default App;
 ```
 
-# Use i18n with React-Component
+# 在React-Component中使用i18n
 
 ```typescript jsx
 // ./src/components/App.ts
@@ -101,12 +99,12 @@ const App: FC = () => {
   return <button>{i18n.chain.button.submit}</button>;
 };
 
-// For re-render when i18n switch locale
+// 切换语言时可以触发重渲染
 export default I18nProvider(i18n)(App);
 ```
 
-# Import locales
-First way, **define** immediately.
+# 导入语言
+第一种, **直接定义**：
 ```typescript
 import zh from './locales/zh';
 
@@ -119,7 +117,7 @@ i18n.define('zh', zh);
 export default i18n;
 ```
 
-Second way, **async import**. loader will be invoked when locales doesn't defined.
+第二种, **异步导入**。当组件检测到语言未定义时，会自动触发`loader`函数
 ```typescript
 const i18n = new I18n({
   defaultLanguage: { ... },
@@ -129,23 +127,22 @@ const i18n = new I18n({
 export default i18n;
 ```
 
-# Switch locale
+# 切换语言
 ```typescript
 i18n.locale('zh');
 ```
 
-# String literal
-Feel free to try `i18n.chain['button.submit']` and `i18n.chain.button.submit`, they have the same effect. Unfortunately, you can't enjoy type checking by using `chain['xx.yy.zz']`.
+# 调用字符串
+你可以随意地切换 `i18n.chain['button.submit']` 和 `i18n.chain.button.submit`，他们是等价的。唯一的区别就是前者无法享受到typescript的类型提示。
 
-# Template with parameters
-You are required to use array to define template when parameters exist.
+# 带参数的模板
+当你想用参数的时候，你需要把模板写成数组的形式
 ```javascript
 const en = {
   property: ['{{property1}}template{{property2}}', { property1: value2, property2: value2 }],
 };
 ```
-
-The second element in array is an object that is default value of template.
+数组第二个元素就是参数列表以及，你可以设置参数的默认值。
 
 ```typescript
 const en = {
@@ -196,11 +193,11 @@ i18n.chain.user.profile({
 });
 ```
 
-The primary difference between method `age` and `birthday` is: `age` has default parameter `(value: number = 20) => {...}` but `birthday` doesn't have. It's optional to input value to property who has default parameter value on function.
+方法参数 `age` 和 `birthday` 的区别是，`age`的形参中含有默认值`(value: number = 20) => {...}`，而后者没有。有默认值意味着调用的时候可以不传参数。
 
 ------------
 
-Set `undefined` to property if you want to force input value when invoking method.
+普通参数如果没有默认值，需要设置成`undefined`，这样typescript才能正确识别，并强制要求调用者输入对应的参数值。
 
 ```typescript
 const en = {
