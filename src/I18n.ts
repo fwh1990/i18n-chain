@@ -9,7 +9,7 @@ export interface UnListen {
 
 interface I18nConfig<T> {
   defaultLocale: Language<T>;
-  loader?: (key: string) => Promise<any>;
+  loader?: (localName: string) => Promise<any>;
 }
 
 type HasDefault<T> = {
@@ -56,7 +56,7 @@ type Locale<U extends object> = {
 
 export class I18n<U extends object, T = Locale<U>> {
   protected readonly defaultLocale: U;
-  protected readonly loader: I18nConfig<T>['loader'];
+  protected readonly loader: I18nConfig<U>['loader'];
   protected locales: Partial<Record<string, U>> = {};
   protected hashes: Partial<Record<string, string>> = {};
   // @ts-ignore
