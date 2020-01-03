@@ -168,7 +168,7 @@ const en = {
 };
 
 ////////////////////////////////////
-// The above code equivalent to definition below: (automatically)
+// 上面的代码可以自动推导出和下面一致的类型：
 interface User {
   Profile {
     country: string | number;
@@ -179,13 +179,13 @@ interface User {
 }
 /////////////////////////////////////
 
-// Minium configuration
+// 最小化调用
 i18n.chain.user.profile({
   age: 20,
   country: 'China',
 });
 
-// Append optional property `name`
+// 增加可选的属性：`name`
 i18n.chain.user.profile({
   age: 30,
   country: 'Usa',
