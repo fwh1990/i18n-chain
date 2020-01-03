@@ -2,7 +2,7 @@
 
 Are you always copy and paste duplicate i18n code like `t('home:submit')` `t('common:something:success')`. It take working slowly, and you are very easy to make typo if you don't recheck words carefully.
 
-I don't like that way, I prefer to write code as a chain like `i18n.chain.common.something.success` with `typescript` checking. So, why not try this package?
+I don't like that way, I prefer to write code as a chain like `i18n.common.something.success` with `typescript` checking. So, why not try this package?
 
 # Installation
 ```bash
@@ -56,10 +56,10 @@ export default zh;
 ```typescript
 // ./src/i18n/index.ts
 
-import { I18n } from 'react-i18n-chain';
+import { createI18n } from 'react-i18n-chain';
 import en from './locales/en';
 
-const i18n = new I18n({
+const i18n = createI18n({
   defaultLocale: {
     key: 'en',
     values: en,
@@ -82,7 +82,7 @@ const App: FC = () => {
   // For re-render when i18n switch locale
   useI18n(i18n);
 
-  return <button>{i18n.chain.button.submit}</button>;
+  return <button>{i18n.button.submit}</button>;
 };
 
 export default App;
@@ -98,7 +98,7 @@ import { I18nProvider } from 'react-i18n-chain';
 import i18n from '../i18n';
 
 const App: FC = () => {
-  return <button>{i18n.chain.button.submit}</button>;
+  return <button>{i18n.button.submit}</button>;
 };
 
 // For re-render when i18n switch locale
@@ -108,20 +108,21 @@ export default I18nProvider(i18n)(App);
 # Import locales
 First way, **define** immediately.
 ```typescript
+import { createI18n } from 'react-i18n-chain';
 import zh from './locales/zh';
 
-const i18n = new I18n({
+const i18n = createI18n({
   defaultLocale: { ... },
 });
 
-i18n.define('zh', zh);
+i18n._.define('zh', zh);
 
 export default i18n;
 ```
 
 Second way, **async import**. loader will be invoked when locales doesn't defined.
 ```typescript
-const i18n = new I18n({
+const i18n = createI18n({
   defaultLanguage: { ... },
   loader: (name) => import('./locales/' + name),
 });
@@ -131,11 +132,11 @@ export default i18n;
 
 # Switch locale
 ```typescript
-i18n.locale('zh');
+i18n._.locale('zh');
 ```
 
 # String literal
-Feel free to try `i18n.chain['button.submit']` and `i18n.chain.button.submit`, they have the same effect. Unfortunately, you can't enjoy type checking by using `chain['xx.yy.zz']`.
+Feel free to try `i18n['button.submit']` and `i18n.button.submit`, they have the same effect. Unfortunately, you can't enjoy type checking by using `chain['xx.yy.zz']`.
 
 # Template with parameters
 You are required to use array to define template when parameters exist.
@@ -183,13 +184,13 @@ interface User {
 /////////////////////////////////////
 
 // Minium configuration
-i18n.chain.user.profile({
+i18n.user.profile({
   age: 20,
   country: 'China',
 });
 
 // Append optional property `name`
-i18n.chain.user.profile({
+i18n.user.profile({
   age: 30,
   country: 'Usa',
   name: 'Lucy',

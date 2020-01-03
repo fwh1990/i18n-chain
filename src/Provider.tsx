@@ -1,12 +1,13 @@
 import React, { ComponentType, PureComponent } from 'react';
 import hoist from 'hoist-non-react-statics';
-import { I18n, UnListen } from './I18n';
+import { UnListen } from './I18n';
+import { I18nInstance } from './createI18n';
 
 type State = Readonly<{
   count: number;
 }>;
 
-export const I18nProvider = (...i18nList: I18n<any>[]) => {
+export const I18nProvider = (...i18nList: I18nInstance[]) => {
   return function<T>(WrappedComponent: ComponentType<T>): ComponentType<T> {
     class I18nComponent extends PureComponent<T, State> {
       static displayName = `I18n(${WrappedComponent.displayName || WrappedComponent.name})`;
@@ -19,7 +20,7 @@ export const I18nProvider = (...i18nList: I18n<any>[]) => {
 
       componentDidMount() {
         this.unListens = i18nList.map((i18n) => {
-          return i18n.listen(() => {
+          return i18n._.listen(() => {
             this.setState({
               count: this.state.count + 1,
             });
