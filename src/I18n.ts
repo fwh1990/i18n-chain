@@ -95,8 +95,23 @@ export class I18n<U extends object, T = Locale<U>> {
 
       try {
         const response = await this.loader(name);
-        const locale = response && response.__esModule ? response.default : response;
+        let locale: U;
+
+        if (response && response.__esModule) {
+          locale = response.default;
+
+          if (!this.isValidLocale(locale)) {
+            throw new TypeError(`The locale named "${name}" has no default export`);
+          }
+        } else {
+          locale = response;
+
+          if (!this.isValidLocale(locale)) {
+            throw new TypeError(`The locale data named "${name}" is invalid`);
+          }
+        }
         this.define(name, locale);
+
         if (this.currentName === name) {
           this.publish(locale);
         }
@@ -108,7 +123,7 @@ export class I18n<U extends object, T = Locale<U>> {
         throw error;
       }
     } else {
-      console.error(`I18n can not find locale "${name}"`);
+      console.error(`I18n can't find locale "${name}"`);
     }
 
     return this;
@@ -169,7 +184,7 @@ export class I18n<U extends object, T = Locale<U>> {
           let replaceValue;
 
           if (typeof newParams[key] === 'function') {
-            // Indeed, it's extends from defaultParams.
+            // Indeed, it's assigned from defaultParams.
             // It means that user doesn't input the value of this key, it only happens when Function has a default value.
             replaceValue = newParams[key]();
           } else if (typeof defaultParams[key] === 'function') {
@@ -245,6 +260,10 @@ export class I18n<U extends object, T = Locale<U>> {
 
   protected isValidProperty(property: string | number | symbol): property is string {
     return property !== '$$typeof' && typeof property === 'string';
+  }
+
+  protected isValidLocale(locale: U): boolean {
+    return locale !== null && typeof locale === 'object';
   }
 
   protected publish(values: U): void {
