@@ -141,62 +141,16 @@ export class I18n<U extends object, T = Locale<U>> {
   }
 
   public get chain(): T {
-    if (this.caches[I18n.CACHE_ROOT_KEY]) {
-      return this.caches[I18n.CACHE_ROOT_KEY]!.result;
+    const key = I18n.CACHE_ROOT_KEY;
+
+    if (!this.caches[key]) {
+      this.caches[key] = {
+        hasData: true,
+        result: this.proxy(this.current, [], false),
+      };
     }
 
-    const proxy = new Proxy(this.current, {
-      get: (_, property) => {
-        if (!this.isValidProperty(property)) {
-          return undefined;
-        }
-
-        if (this.caches[property]) {
-          return this.caches[property]!.result;
-        }
-
-        const properties: string[] = property.split('.');
-        const firstProperty = properties.shift()!;
-        let result: any;
-        let hasData: boolean = false;
-
-        if (this.caches[firstProperty]) {
-          result = this.caches[firstProperty]!.result;
-          hasData = this.caches[firstProperty]!.hasData;
-        } else {
-          if (this.current[firstProperty]) {
-            hasData = true;
-            result = this.proxy(this.current[firstProperty], [firstProperty], false);
-          } else if (this.defaultLocale[firstProperty]) {
-            hasData = true;
-            result = this.proxy(this.defaultLocale[firstProperty], [firstProperty], true);
-          } else {
-            result = this.notFound([property]);
-          }
-
-          this.caches[firstProperty] = {
-            hasData,
-            result,
-          };
-        }
-
-        if (hasData && properties.length) {
-          for (const name of properties) {
-            result = result[name];
-          }
-        }
-
-        return result;
-      },
-    });
-
-    this.caches[I18n.CACHE_ROOT_KEY] = {
-      hasData: true,
-      result: proxy,
-    };
-
-    // @ts-ignore
-    return proxy;
+    return this.caches[key]!.result;
   }
 
   protected proxy(data: any, allProperties: string[], useDefaultLocal: boolean) {
