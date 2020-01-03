@@ -6,7 +6,7 @@
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
   "scripts": {
-    "test": "nyc mocha ./tests/*.test.ts -r ts-node/register --bail"
+    "test": "nyc mocha ./tests/*.test.ts -r ts-node/register"
   },
   "peerDependencies": {
     "react": ">= 15.3.0"
