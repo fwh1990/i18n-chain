@@ -63,6 +63,9 @@ export class I18n<U extends object, T = Locale<U>> {
   protected current: U = {};
   protected currentName: string = '';
   protected listeners: ((localeName: string) => void)[] = [];
+  protected caches: Partial<Record<string, { hasData: boolean; result: any }>> = {};
+
+  private static CACHE_ROOT_KEY = '_._i18n_root_._';
 
   constructor(config: I18nConfig<U>) {
     this.defaultLocale = config.defaultLocale.values;
@@ -138,11 +141,18 @@ export class I18n<U extends object, T = Locale<U>> {
   }
 
   public get chain(): T {
-    // @ts-ignore
-    return new Proxy(this, {
+    if (this.caches[I18n.CACHE_ROOT_KEY]) {
+      return this.caches[I18n.CACHE_ROOT_KEY]!.result;
+    }
+
+    const proxy = new Proxy(this.current, {
       get: (_, property) => {
         if (!this.isValidProperty(property)) {
           return undefined;
+        }
+
+        if (this.caches[property]) {
+          return this.caches[property]!.result;
         }
 
         const properties: string[] = property.split('.');
@@ -150,27 +160,43 @@ export class I18n<U extends object, T = Locale<U>> {
         let result: any;
         let hasData: boolean = false;
 
-        if (this.current[firstProperty]) {
-          hasData = true;
-          result = this.proxy(this.current[firstProperty], [firstProperty], false);
-        } else if (this.defaultLocale[firstProperty]) {
-          hasData = true;
-          result = this.proxy(this.defaultLocale[firstProperty], [firstProperty], true);
-        }
-
-        if (hasData) {
-          if (properties.length) {
-            for (const name of properties) {
-              result = result[name];
-            }
+        if (this.caches[firstProperty]) {
+          result = this.caches[firstProperty]!.result;
+          hasData = this.caches[firstProperty]!.hasData;
+        } else {
+          if (this.current[firstProperty]) {
+            hasData = true;
+            result = this.proxy(this.current[firstProperty], [firstProperty], false);
+          } else if (this.defaultLocale[firstProperty]) {
+            hasData = true;
+            result = this.proxy(this.defaultLocale[firstProperty], [firstProperty], true);
+          } else {
+            result = this.notFound([property]);
           }
 
-          return result;
+          this.caches[firstProperty] = {
+            hasData,
+            result,
+          };
         }
 
-        return this.notFound([property]);
+        if (hasData && properties.length) {
+          for (const name of properties) {
+            result = result[name];
+          }
+        }
+
+        return result;
       },
     });
+
+    this.caches[I18n.CACHE_ROOT_KEY] = {
+      hasData: true,
+      result: proxy,
+    };
+
+    // @ts-ignore
+    return proxy;
   }
 
   protected proxy(data: any, allProperties: string[], useDefaultLocal: boolean) {
@@ -198,45 +224,72 @@ export class I18n<U extends object, T = Locale<U>> {
 
         return message;
       };
-    } else if (typeof data === 'object') {
+    }
+
+    if (typeof data === 'object') {
+      const cacheKey = allProperties.join('.') + (allProperties.length ? '.' : '');
+
       return new Proxy(data, {
         get: (target, property) => {
           if (!this.isValidProperty(property)) {
             return undefined;
           }
 
+          if (this.caches[cacheKey + property]) {
+            return this.caches[cacheKey + property]!.result;
+          }
+
           const properties: string[] = property.split('.');
           const firstProperty = properties.shift()!;
           const newAllProperties = allProperties.concat(firstProperty);
-          let proxyData = target[firstProperty];
+          const singleKey = cacheKey + firstProperty;
+          let result: any;
+          let hasData: boolean = false;
 
-          if (proxyData === undefined) {
-            if (useDefaultLocal) {
-              return this.notFound(newAllProperties);
-            }
-      
-            // Fallback to default locale
-            proxyData = this.defaultLocale;
-      
-            for (const name of newAllProperties) {
-              proxyData = proxyData[name];
-      
-              if (proxyData === undefined) {
-                break;
-              }
-            }
+          if (this.caches[singleKey]) {
+            result = this.caches[singleKey]!.result;
+            hasData = this.caches[singleKey]!.hasData;
+          } else {
+            let proxyData = target[firstProperty];
 
             if (proxyData === undefined) {
-              return this.notFound(newAllProperties);
+              if (useDefaultLocal) {
+                proxyData = this.notFound(newAllProperties);
+              } else {
+                // Fallback to default locale
+                proxyData = this.defaultLocale;
+          
+                for (const name of newAllProperties) {
+                  proxyData = proxyData[name];
+          
+                  if (proxyData === undefined) {
+                    break;
+                  }
+                }
+  
+                if (proxyData === undefined) {
+                  proxyData = this.notFound(newAllProperties);
+                } else {
+                  hasData = true;
+                  // Found key in default locale
+                  useDefaultLocal = true;
+                }
+              }
+            } else {
+              hasData = true;
             }
+            
+            result = hasData 
+              ? this.proxy(proxyData, newAllProperties, useDefaultLocal) 
+              : proxyData;
 
-            // Found key in default locale
-            useDefaultLocal = true;
+            this.caches[singleKey] = {
+              hasData,
+              result,
+            };  
           }
           
-          let result = this.proxy(proxyData, newAllProperties, useDefaultLocal);
-
-          if (properties.length) {
+          if (hasData && properties.length) {
             for (const name of properties) {
               result = result[name];
             }
@@ -268,6 +321,7 @@ export class I18n<U extends object, T = Locale<U>> {
 
   protected publish(values: U): void {
     this.current = values;
+    this.caches = {};
     this.listeners.forEach((listener) => listener(this.currentName));
   }
 }
