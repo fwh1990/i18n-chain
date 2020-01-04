@@ -12,7 +12,10 @@
 | 平台 | 使用版本 |
 | -- | -- |
 | React & React-Native | [@i18n-chain/react](./packages/react) |
-| 其他 | [@i18n-chain/core](./packages/core) |
+| Vue | 开发中... |
+| Angular | 开发中... |
+| Taro | 开发中... |
+| NodeJs & 原生JS | [@i18n-chain/core](./packages/core) |
 
 
 # 案例

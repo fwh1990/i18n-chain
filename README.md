@@ -13,7 +13,10 @@ I don't like that way, I prefer to write code as a chain like `i18n.common.somet
 | Platforms | I18n |
 | -- | -- |
 | React & React-Native | [@i18n-chain/react](./packages/react) |
-| Others | [@i18n-chain/core](./packages/core) |
+| Vue | Coming soon... |
+| Angular | Coming soon... |
+| Taro | Coming soon... |
+| NodeJs & Vanilla-Js | [@i18n-chain/core](./packages/core) |
 
 
 # Demos
