@@ -6,7 +6,7 @@ I don't like that way, I prefer to write code as a chain like `i18n.common.somet
 ```bash
 yarn add @i18n-chain/react
 
-// OR
+# OR
 
 npm install @i18n-chain/react
 ```
