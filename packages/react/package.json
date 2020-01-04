@@ -1,7 +1,7 @@
 {
   "name": "@i18n-chain/react",
   "version": "0.4.3",
-  "main": "index.js",
+  "main": "build/index.js",
   "keywords": [
     "react-i18n",
     "i18n-typescript",
@@ -10,6 +10,9 @@
   "repository": "git@github.com:fwh1990/i18n-chain.git",
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "rm -rf ./build && tsc"
+  },
   "peerDependencies": {
     "react": ">= 15.3.0"
   },

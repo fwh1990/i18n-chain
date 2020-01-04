@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import spies from 'chai-spies';
 import en from './seeds/en';
 import zhTw from './seeds/zh-tw';
-import { createI18n } from '../packages/core/createI18n';
+import { createI18n } from '../packages/core/src/createI18n';
 
 console.error = () => {};
 
