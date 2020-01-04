@@ -2,6 +2,12 @@ Are you always copy and paste duplicate i18n code like `t('home:submit')` `t('co
 
 I don't like that way, I prefer to write code as a chain like `i18n.common.something.success` with `typescript` checking. So, why not try this package?
 
+# Compatibility
+| IE | Edge | Chrome | Firefox | Safari | Node |
+| -- | -- | -- | -- | -- | -- |
+| 9+ | 12+ | 5+ | 4+ | 5+ | * |
+
+
 # Installation
 ```bash
 yarn add @i18n-chain/react
@@ -10,9 +16,6 @@ yarn add @i18n-chain/react
 
 npm install @i18n-chain/react
 ```
-
-# Demos
-[React I18n](https://github.com/easy-demo/react-i18n-demo)
 
 # Define locales
 ```typescript
@@ -139,8 +142,8 @@ interface User {
   Profile {
     country: string | number;
     name?: string;
-    birthday: Date;
     age?: number;
+    birthday: Date;
   }
 }
 /////////////////////////////////////

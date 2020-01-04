@@ -144,8 +144,8 @@ interface User {
   Profile {
     country: string | number;
     name?: string;
-    birthday: Date;
     age?: number;
+    birthday: Date;
   }
 }
 /////////////////////////////////////
