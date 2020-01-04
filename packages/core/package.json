@@ -1,8 +1,12 @@
 {
   "name": "@i18n-chain/core",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "main": "index.js",
-  "keywords": ["i18n", "i18n-chain", "i18n-typescript"],
+  "keywords": [
+    "i18n",
+    "i18n-chain",
+    "i18n-typescript"
+  ],
   "repository": "git@github.com:fwh1990/i18n-chain.git",
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",

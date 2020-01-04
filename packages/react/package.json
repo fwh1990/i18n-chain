@@ -1,8 +1,12 @@
 {
   "name": "@i18n-chain/react",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "main": "index.js",
-  "keywords": ["react-i18n", "i18n-typescript", "react-i18n-typescript"],
+  "keywords": [
+    "react-i18n",
+    "i18n-typescript",
+    "react-i18n-typescript"
+  ],
   "repository": "git@github.com:fwh1990/i18n-chain.git",
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
@@ -10,7 +14,7 @@
     "react": ">= 15.3.0"
   },
   "dependencies": {
-    "@i18n-chain/core": "^0.4.1",
+    "@i18n-chain/core": "^0.4.2",
     "hoist-non-react-statics": "^3.3.1",
     "tslib": "^1.10.0"
   },
