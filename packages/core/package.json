@@ -11,12 +11,14 @@
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
   "scripts": {
+    "prepack": "mkdir .temp && mv build/ .temp && mv .temp build && cp README.md ../../LICENSE package.json build/",
     "build": "rm -rf ./build && tsc"
   },
   "dependencies": {
     "tslib": "^1.10.0"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "directory": "build"
   }
 }

@@ -11,6 +11,7 @@
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
   "scripts": {
+    "prepack": "mkdir .temp && mv build/ .temp && mv .temp build && cp README.md ../../LICENSE package.json build/",
     "build": "rm -rf ./build && tsc"
   },
   "peerDependencies": {
@@ -26,6 +27,7 @@
     "@types/react": "^16.9.17"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "directory": "build"
   }
 }
