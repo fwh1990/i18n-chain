@@ -9,15 +9,15 @@ I don't like that way, I prefer to write code as a chain like `i18n.common.somet
 | -- | -- | -- | -- | -- | -- |
 | 9+ | 12+ | 5+ | 4+ | 5+ | * |
 
-# Packages
-| Platforms | I18n |
-| -- | -- |
-| React & React-Native | [@i18n-chain/react](./packages/react) |
-| Others | [@i18n-chain/core](./packages/core) |
 
+# Installation
+```bash
+yarn add @i18n-chain/core
 
-# Demos
-[React I18n](https://github.com/easy-demo/react-i18n-demo)
+// OR
+
+npm install @i18n-chain/core
+```
 
 # Define locales
 ```typescript
@@ -59,7 +59,7 @@ export default zh;
 ```typescript
 // ./src/i18n/index.ts
 
-import { createI18n } from '@i18n-chain/*';
+import { createI18n } from '@i18n-chain/core';
 import en from './locales/en';
 
 const i18n = createI18n({
@@ -75,7 +75,7 @@ export default i18n;
 # Import locales
 First way, **define** immediately.
 ```typescript
-import { createI18n } from '@i18n-chain/*';
+import { createI18n } from '@i18n-chain/core';
 import zh from './locales/zh';
 
 const i18n = createI18n({
@@ -174,41 +174,4 @@ Set `undefined` to property if you want to force input value when invoking metho
 const en = {
   template: ['Hello, {{world}}', { world: undefined }]
 };
-```
-
-
-# Use with React-Hooks
-
-```typescript jsx
-// ./src/components/App.ts
-
-import React, { FC } from 'react';
-import { useI18n } from '@i18n-chain/react';
-import i18n from '../i18n';
-
-const App: FC = () => {
-  // For re-render when i18n switch locale
-  useI18n(i18n);
-
-  return <button>{i18n.button.submit}</button>;
-};
-
-export default App;
-```
-
-# Use with React-Component
-
-```typescript jsx
-// ./src/components/App.ts
-
-import React, { FC } from 'react';
-import { I18nProvider } from '@i18n-chain/react';
-import i18n from '../i18n';
-
-const App: FC = () => {
-  return <button>{i18n.button.submit}</button>;
-};
-
-// For re-render when i18n switch locale
-export default I18nProvider(i18n)(App);
 ```
