@@ -1,9 +1,10 @@
 import React, { ComponentType, PureComponent } from 'react';
 import hoist from 'hoist-non-react-statics';
 import { I18nInstance, UnListen } from '@i18n-chain/core';
+import { getSignature, SPLIT_STR, getSignatures } from './util';
 
 type State = Readonly<{
-  localNames: string[];
+  sign: string;
 }>;
 
 export const I18nProvider = (...i18nList: I18nInstance[]) => {
@@ -12,35 +13,31 @@ export const I18nProvider = (...i18nList: I18nInstance[]) => {
       static displayName = `I18n(${WrappedComponent.displayName || WrappedComponent.name})`;
 
       readonly state: State = {
-        localNames: [],
+        sign: getSignatures(i18nList),
       };
 
-      protected unListens: UnListen[] = [];
+      protected listeners: UnListen[] = [];
 
       componentDidMount() {
-        this.unListens = i18nList.map((i18n, index) => {
-          return i18n._.listen((name) => {
-            const { localNames } = this.state;
-            const newLocalNames = [...localNames];
-
-            newLocalNames[index] = name;
+        this.listeners = i18nList.map((i18n, index) => {
+          return i18n._.listen(() => {
+            const data = this.state.sign.split(SPLIT_STR);
+            data[index] = getSignature(i18n);
             this.setState({
-              localNames: newLocalNames,
+              sign: data.join(SPLIT_STR),
             });
           });
         });
       }
-  
-      componentWillUnmount() {
-        this.unListens.forEach((unListen) => {
-          unListen();
-        });
-      }
-  
-      render() {
-        const { localNames } = this.state;
 
-        return <WrappedComponent {...this.props} $i18n$={localNames.join(',')} />;
+      componentWillUnmount() {
+        this.listeners.forEach((unListen) => unListen());
+      }
+
+      render() {
+        const { sign } = this.state;
+
+        return <WrappedComponent {...this.props} $i18n$={sign} />;
       }
     }
   
