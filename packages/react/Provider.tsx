@@ -1,10 +1,9 @@
 import React, { ComponentType, PureComponent } from 'react';
 import hoist from 'hoist-non-react-statics';
-import { UnListen } from './I18n';
-import { I18nInstance } from './createI18n';
+import { I18nInstance, UnListen } from '@i18n-chain/core';
 
 type State = Readonly<{
-  count: number;
+  localNames: string[];
 }>;
 
 export const I18nProvider = (...i18nList: I18nInstance[]) => {
@@ -13,16 +12,20 @@ export const I18nProvider = (...i18nList: I18nInstance[]) => {
       static displayName = `I18n(${WrappedComponent.displayName || WrappedComponent.name})`;
 
       readonly state: State = {
-        count: 0,
+        localNames: [],
       };
 
       protected unListens: UnListen[] = [];
 
       componentDidMount() {
-        this.unListens = i18nList.map((i18n) => {
-          return i18n._.listen(() => {
+        this.unListens = i18nList.map((i18n, index) => {
+          return i18n._.listen((name) => {
+            const { localNames } = this.state;
+            const newLocalNames = [...localNames];
+
+            newLocalNames[index] = name;
             this.setState({
-              count: this.state.count + 1,
+              localNames: newLocalNames,
             });
           });
         });
@@ -35,9 +38,9 @@ export const I18nProvider = (...i18nList: I18nInstance[]) => {
       }
   
       render() {
-        const { count } = this.state;
+        const { localNames } = this.state;
 
-        return <WrappedComponent {...this.props} $i18n$={count} />;
+        return <WrappedComponent {...this.props} $i18n$={localNames.join(',')} />;
       }
     }
   

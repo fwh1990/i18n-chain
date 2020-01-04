@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import en from './seeds/en';
 import zhTw from './seeds/zh-tw';
-import { createPolyfillI18n } from '../src/createI18n';
+import { createPolyfillI18n } from '../packages/core/createI18n';
 
 console.error = () => {};
 

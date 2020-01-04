@@ -1,5 +1,5 @@
 {
   "extension": [".ts"],
-  "include": ["src/**"],
+  "include": ["packages/core/**"],
   "reporter": ["text-summary", "lcov"]
 }
