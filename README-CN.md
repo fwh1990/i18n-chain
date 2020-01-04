@@ -134,7 +134,7 @@ i18n._.locale('zh');
 ```
 
 # 调用字符串
-你可以随意地切换 `i18n['button.submit']` 和 `i18n.button.submit`，他们是等价的。唯一的区别就是前者无法享受到typescript的类型提示。
+你可以随意地切换 `i18n._.t('button.submit')` 和 `i18n.button.submit`，他们是等价的。唯一的区别就是前者无法享受到typescript的类型提示。
 
 # 带参数的模板
 当你想用参数的时候，你需要把模板写成数组的形式

@@ -13,6 +13,11 @@ npm install react-i18n-chain
 yarn add react-i18n-chain
 ```
 
+# Browser compatibility
+| IE | Edge | Chrome | Firefox | Safari | Node |
+| -- | -- | -- | -- | -- | -- |
+| 9+ | 12+ | 5+ | 4+ | 5+ | * |
+
 # Demo
 [Here is demo](https://github.com/easy-demo/react-i18n-demo)
 
@@ -136,7 +141,7 @@ i18n._.locale('zh');
 ```
 
 # String literal
-Feel free to try `i18n['button.submit']` and `i18n.button.submit`, they have the same effect. Unfortunately, you can't enjoy type checking by using `chain['xx.yy.zz']`.
+Feel free to try `i18n._.t('button.submit')` and `i18n.button.submit`, they have the same effect. Unfortunately, you can't enjoy type checking by using `chain._.t('xx.yy.zz')`.
 
 # Template with parameters
 You are required to use array to define template when parameters exist.

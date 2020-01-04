@@ -1,14 +1,11 @@
-import chai, { expect } from 'chai';
-import spies from 'chai-spies';
+import { expect } from 'chai';
 import en from './seeds/en';
 import zhTw from './seeds/zh-tw';
-import { createI18n } from '../src/createI18n';
+import { createPolyfillI18n } from '../src/createI18n';
 
 console.error = () => {};
 
-chai.use(spies);
-
-let i18n = createI18n({
+let i18n = createPolyfillI18n({
   defaultLocale: {
     key: 'en',
     values: en,
@@ -16,13 +13,14 @@ let i18n = createI18n({
 });
 
 beforeEach(() => {
-  i18n = createI18n({
+  i18n = createPolyfillI18n({
     defaultLocale: {
       key: 'en',
       values: en,
     },
     loader: (name) => new Promise((resolve) => resolve(require('./seeds/' + name))),
   });
+
   i18n._.define('zh-tw', zhTw).locale('en');
 });
 
@@ -80,17 +78,12 @@ describe('Template function parameters', () => {
 });
 
 it('Message is not found', () => {
-  const spy1 = chai.spy.on(console, 'error');
   // @ts-ignore
-  expect(i18n.nameNotExist).to.equal('nameNotExist');
-  expect(spy1).to.have.been.called.once;
-  chai.spy.restore(console, 'error');
-
-  const spy2 = chai.spy.on(console, 'error');
+  expect(i18n.nameNotExist).to.equal(undefined);
   // @ts-ignore
-  expect(i18n.profile.info1000).to.equal('profile.info1000');
-  expect(spy2).to.have.been.called.once;
-  chai.spy.restore(console, 'error');
+  expect(() => i18n.nameNotExist.next).to.throw(TypeError);
+  // @ts-ignore
+  expect(i18n.profile.info1000).to.equal(undefined);
 });
 
 describe('Switch locale', () => {
@@ -134,24 +127,15 @@ it('Use string literal', () => {
 });
 
 it('Use message fallback to default locale', () => {
-  const spy1 = chai.spy.on(console, 'error');
-
   expect(i18n.defaultValue.info1).to.equal('Here is default value');
   i18n._.locale('zh-tw');
   expect(i18n.defaultValue.info1).to.equal('Here is default value');
 
   i18n._.locale('en');
   expect(i18n.defaultValue.info2.info3).to.equal('Deeply default value');
-  expect(spy1).to.have.been.called.exactly(0);
   expect(i18n._.t('defaultValue.info2.info10000')).to.equal('defaultValue.info2.info10000');
-  expect(spy1).to.have.been.called.once;
-  chai.spy.restore(console, 'error');
 
   i18n._.locale('zh-tw');
-  const spy2 = chai.spy.on(console, 'error');
   expect(i18n.defaultValue.info2.info3).to.equal('Deeply default value');
-  expect(spy2).to.have.been.called.exactly(0);
   expect(i18n._.t('defaultValue.info2.info10000')).to.equal('defaultValue.info2.info10000');
-  expect(spy2).to.have.been.called.once;
-  chai.spy.restore(console, 'error');
 });

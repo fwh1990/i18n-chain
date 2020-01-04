@@ -1,4 +1,5 @@
 import { I18nConfig, I18n } from './I18n';
+import { I18nPolyfill } from './I18nPolyfill';
 
 type HasDefault<T> = {
   [key in keyof T]: T[key] extends undefined 
@@ -42,19 +43,45 @@ type Locale<U extends object> = {
       : U[key]
 };
 
-export type I18nInstance<U extends object = object, T = object> = T & { _: Omit<I18n<U, T>, 'chain'>};
+export type I18nInstance<U extends object = object, T = object> = T & {
+  _: Omit<I18n<U, T>, 'chain'>;
+};
 
-export function createI18n<U extends object, T = Locale<U>>(config: I18nConfig<U>): I18nInstance<U, T> {
-  const instance = new I18n<U, T>(config);
+export function createPolyfillI18n<U extends object, T = Locale<U>>(config: I18nConfig<U>): I18nInstance<U, T> {
+  const instance = new I18nPolyfill<U, T>(config);
+  const data = {};
+
+  Object.defineProperty(data, '_', {
+    value: instance,
+  });
+  
+  Object.keys(config.defaultLocale.values).forEach((property) => {
+    Object.defineProperty(data, property, {
+      get: () => {
+        return instance.chain()[property];
+      },
+    });
+  });
 
   // @ts-ignore
-  return new Proxy(instance, {
-    get: (target, property) => {
-      if (property === '_') {
-        return target;
-      }
+  return data;
+}
 
-      return target.chain()[property];
-    },
-  });
+export function createI18n<U extends object, T = Locale<U>>(config: I18nConfig<U>): I18nInstance<U, T> {
+  if (typeof Proxy === 'function') {
+    const instance = new I18n<U, T>(config);
+
+    // @ts-ignore
+    return new Proxy({}, {
+      get: (_, property) => {
+        if (property === '_') {
+          return instance;
+        }
+
+        return instance.chain()[property];
+      },
+    });
+  }
+
+  return createPolyfillI18n(config);
 }

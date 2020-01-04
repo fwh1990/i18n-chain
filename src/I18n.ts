@@ -21,7 +21,7 @@ export class I18n<U extends object = object, T = object> {
   protected current: U = {};
   protected currentName: string = '';
   protected listeners: ((localeName: string) => void)[] = [];
-  protected caches: Partial<Record<string, { hasData: boolean; result: any }>> = {};
+  protected caches: Partial<Record<string, any>> = {};
 
   private static CACHE_ROOT_KEY = '_._i18n_root_._';
 
@@ -98,20 +98,45 @@ export class I18n<U extends object = object, T = object> {
     };
   }
 
+  public t(key: string): any {
+    if (this.caches[key]) {
+      return this.caches[key];
+    }
+
+    const properties: string[] = key.split('.');
+    const firstProperty = properties.shift()!;
+    let result = this.chain()[firstProperty];
+
+    if (properties.length) {
+      let index = 0;
+
+      for (; index < properties.length; ++index) {
+        result = result[properties[index]];
+
+        if (result === undefined) {
+          break;
+        }
+      }
+
+      if (result === undefined) {
+        result = this.notFound(key);
+      }
+    }
+
+    return result;
+  }
+
   public chain(): T {
     const key = I18n.CACHE_ROOT_KEY;
 
     if (!this.caches[key]) {
-      this.caches[key] = {
-        hasData: true,
-        result: this.proxy(this.current, [], false),
-      };
+      this.caches[key] = this.proxy(this.current, [], false);
     }
 
-    return this.caches[key]!.result;
+    return this.caches[key];
   }
 
-  protected proxy(data: any, allProperties: string[], useDefaultLocal: boolean) {
+  protected proxy(data: object, allProperties: string[], useDefaultLocal: boolean) {
     if (Array.isArray(data)) {
       return (params: object): string => {
         let message: string = data[0];
@@ -139,84 +164,77 @@ export class I18n<U extends object = object, T = object> {
     }
 
     if (typeof data === 'object') {
-      const cacheKey = allProperties.join('.') + (allProperties.length ? '.' : '');
-
-      return new Proxy(data, {
-        get: (target, property) => {
-          if (!this.isValidProperty(property)) {
-            return undefined;
-          }
-
-          if (this.caches[cacheKey + property]) {
-            return this.caches[cacheKey + property]!.result;
-          }
-
-          const properties: string[] = property.split('.');
-          const firstProperty = properties.shift()!;
-          const newAllProperties = allProperties.concat(firstProperty);
-          const singleKey = cacheKey + firstProperty;
-          let result: any;
-          let hasData: boolean = false;
-
-          if (this.caches[singleKey]) {
-            result = this.caches[singleKey]!.result;
-            hasData = this.caches[singleKey]!.hasData;
-          } else {
-            let proxyData = target[firstProperty];
-
-            if (proxyData === undefined) {
-              if (useDefaultLocal) {
-                proxyData = this.notFound(newAllProperties);
-              } else {
-                // Fallback to default locale
-                proxyData = this.defaultLocale;
-          
-                for (const name of newAllProperties) {
-                  proxyData = proxyData[name];
-          
-                  if (proxyData === undefined) {
-                    break;
-                  }
-                }
-  
-                if (proxyData === undefined) {
-                  proxyData = this.notFound(newAllProperties);
-                } else {
-                  hasData = true;
-                  // Found key in default locale
-                  useDefaultLocal = true;
-                }
-              }
-            } else {
-              hasData = true;
-            }
-            
-            result = hasData 
-              ? this.proxy(proxyData, newAllProperties, useDefaultLocal) 
-              : proxyData;
-
-            this.caches[singleKey] = {
-              hasData,
-              result,
-            };  
-          }
-          
-          if (hasData && properties.length) {
-            for (const name of properties) {
-              result = result[name];
-            }
-          }
-
-          return result;
-        },
-      });
+      return this.createProxy(data, allProperties, useDefaultLocal);
     }
 
     return data;
   }
 
-  protected notFound(properties: string[]): string {
-    const data = properties.join('.');
+  protected createProxy(data: object, allProperties: string[], useDefaultLocal: boolean) {
+    return new Proxy(data, {
+      get: (target, property) => {
+        if (!this.isValidProperty(property)) {
+          return undefined;
+        }
+
+        return this.getProxyData(
+          target, 
+          allProperties,
+          property, 
+          useDefaultLocal,
+        );
+      },
+    });
+  }
+
+  protected getProxyData(target: object, allProperties: string[], property: string, useDefaultLocal: boolean): any {
+    const newAllProperties = allProperties.concat(property);
+    const cacheKey = newAllProperties.join('.');
+    let result: any;
+
+    if (this.caches[cacheKey]) {
+      return this.caches[cacheKey];
+    }
+    
+    let proxyData = target[property];
+
+    if (proxyData === undefined) {
+      if (useDefaultLocal) {
+        proxyData = this.notFound(newAllProperties);
+      } else {
+        // Fallback to default locale
+        proxyData = this.recursiveDefaultData(newAllProperties);
+
+        if (proxyData === undefined) {
+          proxyData = this.notFound(newAllProperties);
+        } else {
+          // Found key in default locale
+          useDefaultLocal = true;
+        }
+      }
+    }
+    
+    result = this.proxy(proxyData, newAllProperties, useDefaultLocal);
+    this.caches[cacheKey] = result;
+    return result;
+  }
+
+  protected recursiveDefaultData(allProperties: string[]) {
+    let proxyData = this.defaultLocale;
+  
+    for (const name of allProperties) {
+      proxyData = proxyData[name];
+
+      if (proxyData === undefined) {
+        break;
+      }
+    }
+
+    return proxyData;
+  }
+
+  protected notFound(properties: string | string[]): string {
+    const data = typeof properties === 'string' ? properties : properties.join('.');
 
     console.error(`I18n can't find property "${data}"`);
 
