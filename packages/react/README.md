@@ -1,5 +1,3 @@
-**English** | [中文](https://github.com/fwh1990/i18n-chain/blob/master/README-CN.md)
-
 Are you always copy and paste duplicate i18n code like `t('home:submit')` `t('common:something:success')`. It take working slowly, and you are very easy to make typo if you don't recheck words carefully.
 
 I don't like that way, I prefer to write code as a chain like `i18n.common.something.success` with `typescript` checking. So, why not try this package?
