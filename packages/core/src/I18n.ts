@@ -19,6 +19,7 @@ export class I18n<U extends object = object, T = object> {
   protected hashes: Partial<Record<string, string>> = {};
   // @ts-ignore
   protected current: U = {};
+  protected loadings: string[] = [];
   protected currentName: string = '';
   protected listeners: ((localeName: string) => void)[] = [];
   protected caches: Partial<Record<string, any>> = {};
@@ -40,19 +41,34 @@ export class I18n<U extends object = object, T = object> {
     return this;
   }
 
-  public async locale(name: string): Promise<this> {
+  public getLocaleName(): string {
+    return this.currentName;
+  }
+
+  public async locale(name: string): Promise<void> {
+    const resolved = new Promise<void>((resolve) => resolve());
+
     if (name === this.currentName) {
-      return this;
+      this.clearLoading();
+      return resolved;
     }
 
-    const originalName = this.currentName;
+    if (this.isLoading(name)) {
+      // Make sure this locale can publish
+      this.loadings.push(name);
+      return resolved;
+    }
+
     const language = this.locales[name];
 
     if (language) {
-      this.currentName = name;
-      this.publish(language);
-    } else if (this.loader) {
-      this.currentName = name;
+      this.publish(name, language);
+      this.clearLoading();
+      return resolved;
+    }
+    
+    if (this.loader) {
+      this.loadings.push(name);
 
       try {
         const response = await this.loader(name);
@@ -72,22 +88,22 @@ export class I18n<U extends object = object, T = object> {
           }
         }
         this.define(name, locale);
-
-        if (this.currentName === name) {
-          this.publish(locale);
+       
+        if (this.canPublishFromLoader(name)) {
+          this.publish(name, locale);
         }
+
+        this.clearLoading();
       } catch (error) {
-        if (this.currentName === name) {
-          this.currentName = originalName;
-        }
-
+        // Fallback to previous locale name (if have)
+        this.removeLoading(name);
         throw error;
       }
-    } else {
-      console.error(`I18n can't find locale "${name}"`);
-    }
 
-    return this;
+      return;
+    }
+    
+    return new Promise((_, reject) => reject(new ReferenceError(`I18n can't find locale "${name}"`)));
   }
 
   public listen(fn: (localeName: string) => void): UnListen {
@@ -249,7 +265,24 @@ export class I18n<U extends object = object, T = object> {
     return locale !== null && typeof locale === 'object';
   }
 
-  protected publish(values: U): void {
+  protected isLoading(name: string): boolean {
+    return this.loadings.indexOf(name) >= 0;
+  }
+
+  protected canPublishFromLoader(name: string): boolean {
+    return this.loadings.length > 0 && this.loadings[this.loadings.length - 1] === name;
+  }
+
+  protected removeLoading(name: string): void {
+    this.loadings = this.loadings.filter((item) => item !== name);
+  }
+
+  protected clearLoading(): void {
+    this.loadings = [];
+  }
+
+  protected publish(name: string, values: U): void {
+    this.currentName = name;
     this.current = values;
     this.caches = {};
     this.listeners.forEach((listener) => listener(this.currentName));

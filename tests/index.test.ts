@@ -30,6 +30,20 @@ afterEach(() => {
   i18n._.locale('en');
 });
 
+it('I18n get locale name', (done) => {
+  expect(i18n._.getLocaleName()).to.equal('en');
+  i18n._.locale('zh-tw');
+  expect(i18n._.getLocaleName()).to.equal('zh-tw');
+
+  i18n._.locale('zh');
+  i18n._.locale('zh').then(() => {
+    expect(i18n._.getLocaleName()).to.equal('zh');
+    done();
+  });
+  i18n._.locale('zh');
+  expect(i18n._.getLocaleName()).to.equal('zh-tw');
+});
+
 it('Get default string', () => {
   expect(i18n._.t('name')).to.equal('English');
   expect(i18n.name).to.equal('English');
