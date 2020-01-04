@@ -13,7 +13,7 @@ npm install react-i18n-chain
 yarn add react-i18n-chain
 ```
 
-# Browser compatibility
+# Compatibility
 | IE | Edge | Chrome | Firefox | Safari | Node |
 | -- | -- | -- | -- | -- | -- |
 | 9+ | 12+ | 5+ | 4+ | 5+ | * |

@@ -11,6 +11,12 @@ npm install react-i18n-chain
 yarn add react-i18n-chain
 ```
 
+# 兼容性
+| IE | Edge | Chrome | Firefox | Safari | Node |
+| -- | -- | -- | -- | -- | -- |
+| 9+ | 12+ | 5+ | 4+ | 5+ | * |
+
+
 # 案例
 [点击这里](https://github.com/easy-demo/react-i18n-demo)
 
