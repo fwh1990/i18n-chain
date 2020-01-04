@@ -1,7 +1,7 @@
 {
   "name": "@i18n-chain/react",
   "version": "0.4.3",
-  "main": "build/index.js",
+  "main": "./build/index.js",
   "keywords": [
     "react-i18n",
     "i18n-typescript",

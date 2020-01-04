@@ -6,6 +6,7 @@
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
   "scripts": {
+    "build": "lerna run build",
     "test": "nyc mocha ./tests/*.test.ts -r ts-node/register"
   },
   "devDependencies": {
