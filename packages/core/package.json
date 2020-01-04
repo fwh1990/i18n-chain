@@ -1,6 +1,10 @@
 {
   "name": "@i18n-chain/core",
   "version": "0.4.0",
+  "main": "index.js",
+  "repository": "git@github.com:fwh1990/i18n-chain.git",
+  "author": "范文华 <531362022@qq.com>",
+  "license": "MIT",
   "peerDependencies": {
     "react": ">= 15.3.0"
   },
