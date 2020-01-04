@@ -1,6 +1,6 @@
 {
   "name": "@i18n-chain/react",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "main": "index.js",
   "repository": "git@github.com:fwh1990/i18n-chain.git",
   "author": "范文华 <531362022@qq.com>",
@@ -9,7 +9,7 @@
     "react": ">= 15.3.0"
   },
   "dependencies": {
-    "@i18n-chain/core": "^0.4.0",
+    "@i18n-chain/core": "^0.4.1",
     "hoist-non-react-statics": "^3.3.1",
     "tslib": "^1.10.0"
   },
