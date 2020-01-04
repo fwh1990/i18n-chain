@@ -1,13 +1,13 @@
 {
   "name": "@i18n-chain/react",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "peerDependencies": {
     "react": ">= 15.3.0"
   },
   "dependencies": {
-    "tslib": "^1.10.0",
+    "@i18n-chain/core": "^0.4.0",
     "hoist-non-react-statics": "^3.3.1",
-    "@i18n-chain/core": "^0.3.0"
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
     "@types/hoist-non-react-statics": "^3.3.1",
