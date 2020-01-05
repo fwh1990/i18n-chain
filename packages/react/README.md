@@ -178,7 +178,7 @@ const en = {
 # Use with React-Hooks
 
 ```typescript jsx
-// ./src/components/App.ts
+// ./src/components/App.tsx
 
 import React, { FC } from 'react';
 import { useI18n } from '@i18n-chain/react';
@@ -197,7 +197,7 @@ export default App;
 # Use with React-Component
 
 ```typescript jsx
-// ./src/components/App.ts
+// ./src/components/App.tsx
 
 import React, { FC } from 'react';
 import { I18nProvider } from '@i18n-chain/react';

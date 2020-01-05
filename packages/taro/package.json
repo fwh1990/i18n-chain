@@ -1,11 +1,11 @@
 {
-  "name": "@i18n-chain/react",
-  "version": "0.5.0",
+  "name": "@i18n-chain/taro",
+  "version": "0.0.0",
   "main": "./build/index.js",
   "keywords": [
-    "react-i18n",
+    "taro-i18n",
     "i18n-typescript",
-    "react-i18n-typescript"
+    "taro-i18n-typescript"
   ],
   "repository": "git@github.com:fwh1990/i18n-chain.git",
   "author": "范文华 <531362022@qq.com>",
@@ -15,7 +15,7 @@
     "build": "rm -rf ./build && tsc && mv ./build/src ./build/build && cp README.md ./package.json ./build"
   },
   "peerDependencies": {
-    "react": ">= 15.3.0"
+    "@tarojs/taro": "*"
   },
   "dependencies": {
     "@i18n-chain/core": "^0.5.0",
@@ -23,8 +23,8 @@
     "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@types/hoist-non-react-statics": "^3.3.1",
-    "@types/react": "^16.9.17"
+    "@tarojs/taro": "*",
+    "@types/hoist-non-react-statics": "^3.3.1"
   },
   "publishConfig": {
     "access": "public",

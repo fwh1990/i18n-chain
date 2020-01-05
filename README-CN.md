@@ -181,7 +181,7 @@ const en = {
 # 在React-Hooks中使用
 
 ```typescript jsx
-// ./src/components/App.ts
+// ./src/components/App.tsx
 
 import React, { FC } from 'react';
 import { useI18n } from '@i18n-chain/react';
@@ -200,7 +200,7 @@ export default App;
 # 在React-Component中使用
 
 ```typescript jsx
-// ./src/components/App.ts
+// ./src/components/App.tsx
 
 import React, { FC } from 'react';
 import { I18nProvider } from '@i18n-chain/react';

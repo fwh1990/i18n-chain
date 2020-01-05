@@ -11,7 +11,7 @@
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
   "scripts": {
-    "prepublish": "cp -f ./package.json ./build",
+    "prepublishOnly": "cp -f ./package.json ./build",
     "build": "rm -rf ./build && tsc && mv ./build/src ./build/build && cp README.md ./package.json ./build"
   },
   "dependencies": {

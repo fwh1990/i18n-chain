@@ -1,5 +1,3 @@
-**English** | [中文](https://github.com/fwh1990/i18n-chain/blob/master/README-CN.md)
-
 Are you always copy and paste duplicate i18n code like `t('home:submit')` `t('common:something:success')`. It take working slowly, and you are very easy to make typo if you don't recheck words carefully.
 
 I don't like that way, I prefer to write code as a chain like `i18n.common.something.success` with `typescript` checking. So, why not try this package?
@@ -9,18 +7,15 @@ I don't like that way, I prefer to write code as a chain like `i18n.common.somet
 | -- | -- | -- | -- | -- | -- |
 | 9+ | 12+ | 5+ | 4+ | 5+ | * |
 
-# Packages
-| Platforms | I18n |
-| -- | -- |
-| React & React-Native | [@i18n-chain/react](./packages/react) |
-| Vue | Coming soon... |
-| Angular | Coming soon... |
-| Taro | Coming soon... |
-| NodeJs & Vanilla-Js | [@i18n-chain/core](./packages/core) |
 
+# Installation
+```bash
+yarn add @i18n-chain/taro
 
-# Demos
-[React I18n](https://github.com/easy-demo/react-i18n-demo)
+# OR
+
+npm install @i18n-chain/taro
+```
 
 # Define locales
 ```typescript
@@ -62,7 +57,7 @@ export default zh;
 ```typescript
 // ./src/i18n/index.ts
 
-import { createI18n } from '@i18n-chain/*';
+import { createI18n } from '@i18n-chain/taro';
 import en from './locales/en';
 
 const i18n = createI18n({
@@ -78,7 +73,7 @@ export default i18n;
 # Import locales
 First way, **define** immediately.
 ```typescript
-import { createI18n } from '@i18n-chain/*';
+import { createI18n } from '@i18n-chain/taro';
 import zh from './locales/zh';
 
 const i18n = createI18n({
@@ -180,13 +175,13 @@ const en = {
 ```
 
 
-# Use with React-Hooks
+# Use with Hooks
 
 ```typescript jsx
 // ./src/components/App.tsx
 
-import React, { FC } from 'react';
-import { useI18n } from '@i18n-chain/react';
+import Taro, { FC } from '@tarojs/taro';
+import { useI18n } from '@i18n-chain/taro';
 import i18n from '../i18n';
 
 const App: FC = () => {
@@ -199,13 +194,13 @@ const App: FC = () => {
 export default App;
 ```
 
-# Use with React-Component
+# Use with Component
 
 ```typescript jsx
 // ./src/components/App.tsx
 
-import React, { FC } from 'react';
-import { I18nProvider } from '@i18n-chain/react';
+import Taro, { FC } from '@tarojs/taro';
+import { I18nProvider } from '@i18n-chain/taro';
 import i18n from '../i18n';
 
 const App: FC = () => {
