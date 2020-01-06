@@ -1,6 +1,6 @@
 {
   "name": "@i18n-chain/taro",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "main": "./build/index.js",
   "keywords": [
     "taro-i18n",
