@@ -14,7 +14,7 @@
 | React & React-Native | [@i18n-chain/react](./packages/react) |
 | Vue | 开发中... |
 | Angular | 开发中... |
-| Taro | 开发中... |
+| Taro | [@i18n-chain/taro](./packages/taro) |
 | NodeJs & 原生JS | [@i18n-chain/core](./packages/core) |
 
 
@@ -175,41 +175,4 @@ i18n.user.profile({
 const en = {
   template: ['Hello, {{world}}', { world: undefined }]
 };
-```
-
-
-# 在React-Hooks中使用
-
-```typescript jsx
-// ./src/components/App.tsx
-
-import React, { FC } from 'react';
-import { useI18n } from '@i18n-chain/react';
-import i18n from '../i18n';
-
-const App: FC = () => {
-  // 切换语言时可以触发重渲染
-  useI18n(i18n);
-
-  return <button>{i18n.button.submit}</button>;
-};
-
-export default App;
-```
-
-# 在React-Component中使用
-
-```typescript jsx
-// ./src/components/App.tsx
-
-import React, { FC } from 'react';
-import { I18nProvider } from '@i18n-chain/react';
-import i18n from '../i18n';
-
-const App: FC = () => {
-  return <button>{i18n.button.submit}</button>;
-};
-
-// 切换语言时可以触发重渲染
-export default I18nProvider(i18n)(App);
 ```

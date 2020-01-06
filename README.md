@@ -15,7 +15,7 @@ I don't like that way, I prefer to write code as a chain like `i18n.common.somet
 | React & React-Native | [@i18n-chain/react](./packages/react) |
 | Vue | Coming soon... |
 | Angular | Coming soon... |
-| Taro | Coming soon... |
+| Taro | [@i18n-chain/taro](./packages/taro) |
 | NodeJs & Vanilla-Js | [@i18n-chain/core](./packages/core) |
 
 
@@ -177,41 +177,4 @@ Set `undefined` to property if you want to force input value when invoking metho
 const en = {
   template: ['Hello, {{world}}', { world: undefined }]
 };
-```
-
-
-# Use with React-Hooks
-
-```typescript jsx
-// ./src/components/App.tsx
-
-import React, { FC } from 'react';
-import { useI18n } from '@i18n-chain/react';
-import i18n from '../i18n';
-
-const App: FC = () => {
-  // For re-render when i18n switch locale
-  useI18n(i18n);
-
-  return <button>{i18n.button.submit}</button>;
-};
-
-export default App;
-```
-
-# Use with React-Component
-
-```typescript jsx
-// ./src/components/App.tsx
-
-import React, { FC } from 'react';
-import { I18nProvider } from '@i18n-chain/react';
-import i18n from '../i18n';
-
-const App: FC = () => {
-  return <button>{i18n.button.submit}</button>;
-};
-
-// For re-render when i18n switch locale
-export default I18nProvider(i18n)(App);
 ```
