@@ -7,20 +7,6 @@
 | -- | -- | -- | -- | -- | -- |
 | 9+ | 12+ | 5+ | 4+ | 5+ | * |
 
-
-# 插件
-| 平台 | 使用版本 |
-| -- | -- |
-| React & React-Native | [@i18n-chain/react](./packages/react) |
-| Vue | 开发中... |
-| Angular | 开发中... |
-| Taro | [@i18n-chain/taro](./packages/taro) |
-| NodeJs & 原生JS | [@i18n-chain/core](./packages/core) |
-
-
-# 案例
-[React I18n](https://github.com/easy-demo/react-i18n-demo)
-
 # 定义本地化文件
 ```typescript
 // ./src/i18n/locales/en.ts
@@ -176,3 +162,17 @@ const en = {
   template: ['Hello, {{world}}', { world: undefined }]
 };
 ```
+
+
+# 更多使用方法
+| 平台 | 使用版本 |
+| -- | -- |
+| React & React-Native | [@i18n-chain/react](./packages/react) |
+| Vue | 开发中... |
+| Angular | 开发中... |
+| Taro | [@i18n-chain/taro](./packages/taro) |
+| NodeJs & 原生JS | [@i18n-chain/core](./packages/core) |
+
+
+# 案例
+[React I18n](https://github.com/easy-demo/react-i18n-demo)

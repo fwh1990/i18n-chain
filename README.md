@@ -9,19 +9,6 @@ I don't like that way, I prefer to write code as a chain like `i18n.common.somet
 | -- | -- | -- | -- | -- | -- |
 | 9+ | 12+ | 5+ | 4+ | 5+ | * |
 
-# Packages
-| Platforms | I18n |
-| -- | -- |
-| React & React-Native | [@i18n-chain/react](./packages/react) |
-| Vue | Coming soon... |
-| Angular | Coming soon... |
-| Taro | [@i18n-chain/taro](./packages/taro) |
-| NodeJs & Vanilla-Js | [@i18n-chain/core](./packages/core) |
-
-
-# Demos
-[React I18n](https://github.com/easy-demo/react-i18n-demo)
-
 # Define locales
 ```typescript
 // ./src/i18n/locales/en.ts
@@ -178,3 +165,17 @@ const en = {
   template: ['Hello, {{world}}', { world: undefined }]
 };
 ```
+
+
+# More Usage
+| Platforms | I18n |
+| -- | -- |
+| React & React-Native | [@i18n-chain/react](./packages/react) |
+| Vue | Coming soon... |
+| Angular | Coming soon... |
+| Taro | [@i18n-chain/taro](./packages/taro) |
+| NodeJs & Vanilla-Js | [@i18n-chain/core](./packages/core) |
+
+
+# Demos
+[React I18n](https://github.com/easy-demo/react-i18n-demo)
