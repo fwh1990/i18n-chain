@@ -47,9 +47,9 @@ export type I18nInstance<U extends object = object, T = object> = T & {
   _: Omit<I18n<U, T>, 'chain'>;
 };
 
-export function createPolyfillI18n<U extends object, T = Locale<U>>(config: I18nConfig<U>): I18nInstance<U, T> {
+export function createPolyfillI18n<U extends object, K extends object, T = Locale<U>>(config: I18nConfig<U>, data?: K): I18nInstance<U, T> {
   const instance = new I18nPolyfill<U, T>(config);
-  const data = {};
+  const dataa = data || {};
 
   Object.defineProperty(data, '_', {
     value: instance,
@@ -64,15 +64,15 @@ export function createPolyfillI18n<U extends object, T = Locale<U>>(config: I18n
   });
 
   // @ts-ignore
-  return data;
+  return dataa;
 }
 
-export function createI18n<U extends object, T = Locale<U>>(config: I18nConfig<U>): I18nInstance<U, T> {
+export function createI18n<U extends object, K extends object, T = Locale<U>>(config: I18nConfig<U>, data?: K): I18nInstance<U, T> {
   if (typeof Proxy === 'function') {
     const instance = new I18n<U, T>(config);
 
     // @ts-ignore
-    return new Proxy({}, {
+    return new Proxy(data || {}, {
       get: (_, property) => {
         if (property === '_') {
           return instance;
