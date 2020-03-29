@@ -1,8 +1,8 @@
-import { I18nInstance } from '@i18n-chain/core';
+import { I18nInstance, hack } from '@i18n-chain/core';
 import { useState, useEffect } from '@tarojs/taro';
 import { getSignature, SPLIT_STR, getSignatures } from './util';
 
-export function useI18n(...i18nList: I18nInstance[]): void {
+export function useI18n(...i18nList: I18nInstance[]): typeof hack {
   const [, setSign] = useState(() => getSignatures(i18nList));
 
   useEffect(() => {
@@ -21,5 +21,5 @@ export function useI18n(...i18nList: I18nInstance[]): void {
     };
   }, []);
 
-  return;
+  return hack;
 }

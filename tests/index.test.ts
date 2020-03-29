@@ -3,7 +3,7 @@ import spies from 'chai-spies';
 import en from './seeds/en';
 import zhTw from './seeds/zh-tw';
 import { createI18n } from '../packages/core/src/createI18n';
-import { i18nTemplate } from '../packages/core/src/i18nTemplate';
+import { templateHack } from '../packages/core/src/templateHack';
 
 console.error = () => {};
 
@@ -54,7 +54,7 @@ it('Get default string', () => {
 });
 
 it('Use i18n template hacks', () => {
-  expect(i18n.profile.info1).to.equal(i18nTemplate(i18n).profile.info1);
+  expect(i18n.profile.info1).to.equal(templateHack(i18n).profile.info1);
 });
 
 describe('Template parameters', () => {
