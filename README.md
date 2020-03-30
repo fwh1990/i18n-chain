@@ -142,15 +142,16 @@ interface User {
 
 // Minium configuration
 i18n.user.profile({
-  age: 20,
-  country: 'China',
+  country: 'Earth',
+  birthday: new Date(),
 });
 
-// Append optional property `name`
+// Append optional property `name` and `age`
 i18n.user.profile({
-  age: 30,
-  country: 'Usa',
+  country: 'Earth',
   name: 'Lucy',
+  age: 30,
+  birthday: new Date(),
 });
 ```
 

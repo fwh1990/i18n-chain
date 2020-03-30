@@ -139,15 +139,16 @@ interface User {
 
 // 最小化调用
 i18n.user.profile({
-  age: 20,
-  country: 'China',
+  country: 'Earth',
+  birthday: new Date(),
 });
 
-// 增加可选的属性：`name`
+// 增加可选的属性：`name` 和 `age`
 i18n.user.profile({
-  age: 30,
-  country: 'Usa',
+  country: 'Earth',
   name: 'Lucy',
+  age: 30,
+  birthday: new Date(),
 });
 ```
 
