@@ -169,7 +169,7 @@ const en = {
 
 
 # Detail Usage
-| Platforms | I18n Package |
+| Platform | Package |
 | -- | -- |
 | React & React-Native | [@i18n-chain/react](./packages/react) |
 | Taro | [@i18n-chain/taro](./packages/taro) |
