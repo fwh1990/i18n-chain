@@ -168,12 +168,10 @@ const en = {
 ```
 
 
-# More Usage
-| Platforms | I18n |
+# Detail Usage
+| Platforms | I18n Package |
 | -- | -- |
 | React & React-Native | [@i18n-chain/react](./packages/react) |
-| Vue | Coming soon... |
-| Angular | Coming soon... |
 | Taro | [@i18n-chain/taro](./packages/taro) |
 | NodeJs & Vanilla-Js | [@i18n-chain/core](./packages/core) |
 

@@ -165,12 +165,11 @@ const en = {
 ```
 
 
-# 更多使用方法
-| 平台 | 使用版本 |
+# 详细的使用方法
+
+| 平台 | 库 |
 | -- | -- |
 | React & React-Native | [@i18n-chain/react](./packages/react) |
-| Vue | 开发中... |
-| Angular | 开发中... |
 | Taro | [@i18n-chain/taro](./packages/taro) |
 | NodeJs & 原生JS | [@i18n-chain/core](./packages/core) |
 
