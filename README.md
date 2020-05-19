@@ -173,7 +173,7 @@ const en = {
 | -- | -- |
 | React & React-Native | [@i18n-chain/react](./packages/react) |
 | Taro | [@i18n-chain/taro](./packages/taro) |
-| NodeJs & Vanilla-Js | [@i18n-chain/core](./packages/core) |
+| NodeJs | [@i18n-chain/node](./packages/node) |
 
 
 # Demos

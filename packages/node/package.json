@@ -1,0 +1,25 @@
+{
+  "name": "@i18n-chain/node",
+  "version": "0.7.0",
+  "main": "./build/index.js",
+  "keywords": [
+    "node-i18n",
+    "i18n-typescript",
+    "node-i18n-typescript"
+  ],
+  "repository": "git@github.com:fwh1990/i18n-chain.git",
+  "author": "范文华 <531362022@qq.com>",
+  "license": "MIT",
+  "scripts": {
+    "prepublishOnly": "cp -f ./package.json ./build",
+    "build": "rm -rf ./build && tsc && mv ./build/src ./build/build && cp README.md ./package.json ./build"
+  },
+  "dependencies": {
+    "@i18n-chain/core": "^0.7.0",
+    "tslib": "^1.10.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "directory": "build"
+  }
+}
