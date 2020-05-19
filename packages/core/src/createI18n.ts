@@ -27,7 +27,7 @@ type ParameterType<T> = T extends undefined
     ? P[0]
     : T;
 
-type Locale<U extends object> = {
+export type Locale<U extends object> = {
   [key in keyof U]: U[key] extends Array<any>
     ? Extract<U[key][number], object> extends infer R
       ? NoDefault<R> extends never
