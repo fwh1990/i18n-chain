@@ -1,6 +1,6 @@
 {
   "name": "@i18n-chain/node",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "main": "./build/index.js",
   "keywords": [
     "node-i18n",
@@ -15,7 +15,7 @@
     "build": "rm -rf ./build && tsc && mv ./build/src ./build/build && cp README.md ./package.json ./build"
   },
   "dependencies": {
-    "@i18n-chain/core": "^0.7.0",
+    "@i18n-chain/core": "^0.8.0",
     "tslib": "^1.10.0"
   },
   "publishConfig": {
