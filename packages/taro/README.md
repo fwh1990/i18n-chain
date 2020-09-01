@@ -15,15 +15,15 @@ Visit [Github Repo](https://github.com/fwh1990/i18n-chain) to get more informati
 ```typescript jsx
 // ./src/components/App.tsx
 
-import Taro, { FC } from '@tarojs/taro';
-import { useI18n, hack } from '@i18n-chain/taro';
+import React, { FC } from 'react';
+import { useI18n } from '@i18n-chain/taro';
 import i18n from '../i18n';
 
 const App: FC = () => {
   // For re-render when i18n switch locale
   useI18n(i18n);
 
-  return <button>{hack(i18n).button.submit}</button>;
+  return <button>{i18n.button.submit}</button>;
 };
 
 export default App;
@@ -34,14 +34,14 @@ export default App;
 ```typescript jsx
 // ./src/components/App.tsx
 
-import Taro, { Component } from '@tarojs/taro';
-import { I18nProvider, hack } from '@i18n-chain/taro';
+import React, { Component } from 'react';
+import { I18nProvider } from '@i18n-chain/taro';
 import i18n from '../i18n';
 
 // Must use decorator in taro
 @I18nProvider(i18n)
 class App extends Component {
-  return <button>{hack(i18n).button.submit}</button>;
+  return <button>{i18n.button.submit}</button>;
 };
 
 // For re-render when i18n switch locale

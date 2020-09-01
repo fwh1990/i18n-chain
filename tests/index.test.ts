@@ -3,7 +3,6 @@ import spies from 'chai-spies';
 import en from './seeds/en';
 import zhTw from './seeds/zh-tw';
 import { createI18n } from '../packages/core/src/createI18n';
-import { templateHack } from '../packages/core/src/templateHack';
 
 console.error = () => {};
 
@@ -51,10 +50,6 @@ it('Get default string', () => {
 
   expect(i18n.profile.info1).to.equal('Here is the profile');
   expect(i18n._.t('profile.info1')).to.equal('Here is the profile');
-});
-
-it('Use i18n template hacks', () => {
-  expect(i18n.profile.info1).to.equal(templateHack(i18n).profile.info1);
 });
 
 describe('Template parameters', () => {

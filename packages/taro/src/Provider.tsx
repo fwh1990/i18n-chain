@@ -1,4 +1,4 @@
-import { ComponentClass, Component } from '@tarojs/taro';
+import { ComponentClass, Component } from 'react';
 import { I18nInstance, UnListen } from '@i18n-chain/core';
 import { getSignature, SPLIT_STR, getSignatures } from './util';
 

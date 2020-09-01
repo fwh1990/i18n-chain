@@ -1,5 +1,5 @@
 import { I18nInstance } from '@i18n-chain/core';
-import { useState, useEffect } from '@tarojs/taro';
+import { useState, useEffect } from 'react';
 import { getSignature, SPLIT_STR, getSignatures } from './util';
 
 export function useI18n(...i18nList: I18nInstance[]): void {
