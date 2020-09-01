@@ -1,6 +1,6 @@
 {
   "name": "@i18n-chain/core",
-  "version": "0.8.0",
+  "version": "1.0.0",
   "main": "./build/index.js",
   "keywords": [
     "i18n",
