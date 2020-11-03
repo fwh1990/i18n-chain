@@ -1,6 +1,6 @@
 {
   "name": "@i18n-chain/react",
-  "version": "1.0.0",
+  "version": "2.0.0-alpha.0",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "lib/index.d.ts",
@@ -22,7 +22,7 @@
     "react": ">= 16.8.0"
   },
   "dependencies": {
-    "@i18n-chain/core": "1.0.0",
+    "@i18n-chain/core": "2.0.0-alpha.0",
     "hoist-non-react-statics": "3.3.2",
     "tslib": "2.0.3"
   },
