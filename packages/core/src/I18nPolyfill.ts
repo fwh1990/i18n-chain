@@ -1,7 +1,7 @@
 import { I18n } from './I18n';
 
 export class I18nPolyfill<U extends object = object, T = object> extends I18n<U, T> {
-  protected createProxy(data: object, allProperties: string[], useDefaultLocal: boolean) {
+  protected createProxy(data: object, allProperties: string[], useDefaultLocal: boolean, literal: boolean) {
     const proxyData = {};
     let toDefineProperty = { ...data };
 
@@ -20,6 +20,7 @@ export class I18nPolyfill<U extends object = object, T = object> extends I18n<U,
             allProperties,
             property,
             useDefaultLocal,
+            literal,
           );
         },
       });

@@ -83,7 +83,7 @@ const i18n = createI18n({
   defaultLocale: { ... },
 });
 
-i18n._.define('zh', zh);
+i18n.define('zh', zh);
 
 export default i18n;
 ```
@@ -100,7 +100,7 @@ export default i18n;
 
 ### 切换语言
 ```typescript
-i18n._.locale('zh');
+i18n.locale('zh');
 ```
 
 ### 字符串模板
@@ -108,7 +108,7 @@ i18n._.locale('zh');
 
 别担心，框架提供了生成字符串模板的功能，现在一起试试
 ```typescript
-const key = i18n.toLiteral.button.submit;
+const key = i18n.literal.button.submit;
 key === 'button.submit' // true
 
 const value = i18n.translate(str);

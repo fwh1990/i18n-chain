@@ -23,6 +23,7 @@ export class I18n<U extends object = object, T = object> {
   protected currentName: string = '';
   protected listeners: ((localeName: string) => void)[] = [];
   protected caches: Partial<Record<string, any>> = {};
+  protected literalCaches: Partial<Record<string, any>> = {};
 
   private static CACHE_ROOT_KEY = '_._i18n_root_._';
 
@@ -142,17 +143,27 @@ export class I18n<U extends object = object, T = object> {
     return result;
   }
 
+  public get literal(): T {
+    const key = I18n.CACHE_ROOT_KEY;
+
+    if (!this.literalCaches[key]) {
+      this.literalCaches[key] = this.proxy(this.current, [], false, true);
+    }
+
+    return this.literalCaches[key];
+  }
+
   public get chain(): T {
     const key = I18n.CACHE_ROOT_KEY;
 
     if (!this.caches[key]) {
-      this.caches[key] = this.proxy(this.current, [], false);
+      this.caches[key] = this.proxy(this.current, [], false, false);
     }
 
     return this.caches[key];
   }
 
-  protected proxy(data: object, allProperties: string[], useDefaultLocal: boolean) {
+  protected proxy(data: any[] | object | string, allProperties: string[], useDefaultLocal: boolean, literal: boolean) {
     if (Array.isArray(data)) {
       return (params: object): string => {
         let message: string = data[0];
@@ -180,13 +191,17 @@ export class I18n<U extends object = object, T = object> {
     }
 
     if (typeof data === 'object') {
-      return this.createProxy(data, allProperties, useDefaultLocal);
+      return this.createProxy(data, allProperties, useDefaultLocal, literal);
+    }
+
+    if (literal) {
+      return allProperties.join('.');
     }
 
     return data;
   }
 
-  protected createProxy(data: object, allProperties: string[], useDefaultLocal: boolean) {
+  protected createProxy(data: object, allProperties: string[], useDefaultLocal: boolean, literal: boolean) {
     return new Proxy(data, {
       get: (target, property) => {
         if (!this.isValidProperty(property)) {
@@ -198,18 +213,25 @@ export class I18n<U extends object = object, T = object> {
           allProperties,
           property,
           useDefaultLocal,
+          literal,
         );
       },
     });
   }
 
-  protected getProxyData(target: object, allProperties: string[], property: string, useDefaultLocal: boolean): any {
+  protected getProxyData(target: object, allProperties: string[], property: string, useDefaultLocal: boolean, literal: boolean): any {
     const newAllProperties = allProperties.concat(property);
     const cacheKey = newAllProperties.join('.');
     let result: any;
 
-    if (this.caches[cacheKey]) {
-      return this.caches[cacheKey];
+    if (literal) {
+      if (this.literalCaches[cacheKey]) {
+        return this.literalCaches[cacheKey];
+      }
+    } else {
+      if (this.caches[cacheKey]) {
+        return this.caches[cacheKey];
+      }
     }
 
     let proxyData = target[property];
@@ -230,8 +252,12 @@ export class I18n<U extends object = object, T = object> {
       }
     }
 
-    result = this.proxy(proxyData, newAllProperties, useDefaultLocal);
-    this.caches[cacheKey] = result;
+    result = this.proxy(proxyData, newAllProperties, useDefaultLocal, literal);
+    if (literal) {
+      this.literalCaches[cacheKey] = result;
+    } else {
+      this.caches[cacheKey] = result;
+    }
     return result;
   }
 

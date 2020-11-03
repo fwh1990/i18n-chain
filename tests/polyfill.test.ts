@@ -153,3 +153,17 @@ it('Use message fallback to default locale', () => {
   expect(i18n.chain.defaultValue.info2.info3).to.equal('Deeply default value');
   expect(i18n.translate('defaultValue.info2.info10000')).to.equal('defaultValue.info2.info10000');
 });
+
+it ('can get literal', () => {
+  expect(i18n.literal.profile.info1).to.equal('profile.info1');
+  expect(i18n.chain.profile.info1).to.equal('Here is the profile');
+  expect(i18n.literal.profile.info1).to.equal('profile.info1');
+
+  expect(i18n.literal.defaultValue.info2.info3).to.equal('defaultValue.info2.info3');
+  expect(i18n.chain.defaultValue.info2.info3).to.equal('Deeply default value');
+  expect(i18n.literal.defaultValue.info2.info4).to.equal('defaultValue.info2.info4');
+  expect(i18n.chain.defaultValue.info2.info4).to.equal('Deeply default value 4');
+
+  expect(i18n.literal.name).to.equal('name');
+  expect(i18n.chain.name).to.equal('English');
+});

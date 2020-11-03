@@ -47,6 +47,7 @@ const en = {
     info1: 'Here is default value',
     info2: {
       info3: 'Deeply default value',
+      info4: 'Deeply default value 4',
     },
   },
 };
