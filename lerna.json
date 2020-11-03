@@ -14,5 +14,6 @@
     "**/*.md"
   ],
   "version": "1.0.0",
-  "exact": true
+  "exact": true,
+  "registry": "https://registry.npmjs.org"
 }
