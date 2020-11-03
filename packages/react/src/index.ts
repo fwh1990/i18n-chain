@@ -1,3 +1,2 @@
-export * from '@i18n-chain/core';
-export { I18nProvider } from './Provider';
-export { useI18n } from './hooks';
+export { UnListen, Locale, I18n } from '@i18n-chain/core';
+export { createI18n } from './createI18n';

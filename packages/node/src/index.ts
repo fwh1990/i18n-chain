@@ -1,1 +1,1 @@
-export * from '@i18n-chain/core';
+export { UnListen, Locale, I18n, createI18n } from '@i18n-chain/core';

@@ -18,7 +18,7 @@ export class I18nPolyfill<U extends object = object, T = object> extends I18n<U,
           return this.getProxyData(
             data,
             allProperties,
-            property, 
+            property,
             useDefaultLocal,
           );
         },

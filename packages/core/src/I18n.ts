@@ -66,7 +66,7 @@ export class I18n<U extends object = object, T = object> {
       this.clearLoading();
       return resolved;
     }
-    
+
     if (this.loader) {
       this.loadings.push(name);
 
@@ -88,7 +88,7 @@ export class I18n<U extends object = object, T = object> {
           }
         }
         this.define(name, locale);
-       
+
         if (this.canPublishFromLoader(name)) {
           this.publish(name, locale);
         }
@@ -102,7 +102,7 @@ export class I18n<U extends object = object, T = object> {
 
       return;
     }
-    
+
     return new Promise((_, reject) => reject(new ReferenceError(`I18n can't find locale "${name}"`)));
   }
 
@@ -114,14 +114,14 @@ export class I18n<U extends object = object, T = object> {
     };
   }
 
-  public t(key: string): any {
+  public translate(key: string): any {
     if (this.caches[key]) {
       return this.caches[key];
     }
 
     const properties: string[] = key.split('.');
     const firstProperty = properties.shift()!;
-    let result = this.chain()[firstProperty];
+    let result = this.chain[firstProperty];
 
     if (properties.length) {
       let index = 0;
@@ -142,7 +142,7 @@ export class I18n<U extends object = object, T = object> {
     return result;
   }
 
-  public chain(): T {
+  public get chain(): T {
     const key = I18n.CACHE_ROOT_KEY;
 
     if (!this.caches[key]) {
@@ -160,7 +160,7 @@ export class I18n<U extends object = object, T = object> {
         const newParams = Object.assign({}, defaultParams, params);
 
         for (const key of Object.keys(newParams)) {
-          let replaceValue;
+          let replaceValue: string;
 
           if (typeof newParams[key] === 'function') {
             // Indeed, it's assigned from defaultParams.
@@ -194,9 +194,9 @@ export class I18n<U extends object = object, T = object> {
         }
 
         return this.getProxyData(
-          target, 
+          target,
           allProperties,
-          property, 
+          property,
           useDefaultLocal,
         );
       },
@@ -211,7 +211,7 @@ export class I18n<U extends object = object, T = object> {
     if (this.caches[cacheKey]) {
       return this.caches[cacheKey];
     }
-    
+
     let proxyData = target[property];
 
     if (proxyData === undefined) {
@@ -229,7 +229,7 @@ export class I18n<U extends object = object, T = object> {
         }
       }
     }
-    
+
     result = this.proxy(proxyData, newAllProperties, useDefaultLocal);
     this.caches[cacheKey] = result;
     return result;
@@ -237,7 +237,7 @@ export class I18n<U extends object = object, T = object> {
 
   protected recursiveDefaultData(allProperties: string[]) {
     let proxyData = this.defaultLocale;
-  
+
     for (const name of allProperties) {
       proxyData = proxyData[name];
 

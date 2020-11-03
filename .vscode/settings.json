@@ -1,10 +1,11 @@
 {
-  "javascript.preferences.quoteStyle": "single",
-  "html.format.endWithNewline": true,
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "typescript.preferences.quoteStyle": "single",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "emmet.triggerExpansionOnTab": true,
   "editor.tabSize": 2,
-  "editor.trimAutoWhitespace": true,
-  "auto-close-tag.activationOnLanguage": [
-    "javascriptreact",
-    "typescriptreact"
-  ]
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

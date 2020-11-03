@@ -1,25 +1,28 @@
 {
   "name": "i18n-chain",
-  "version": "0.0.0",
   "main": "index.js",
   "repository": "git@github.com:fwh1990/i18n-chain.git",
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
   "scripts": {
+    "next": "lerna run build && lerna publish --dist-tag=next",
+    "latest": "lerna run build && lerna publish",
     "build": "lerna run build",
+    "relink": "lerna run relink",
+    "bootstrap": "lerna clean -y && lerna bootstrap && yarn relink",
     "test": "nyc mocha ./tests/*.test.ts -r ts-node/register"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.7",
-    "@types/chai-spies": "^1.0.1",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^13.1.2",
+    "@types/chai": "^4.2.14",
+    "@types/chai-spies": "^1.0.2",
+    "@types/mocha": "^8.0.3",
+    "@types/node": "^14.14.6",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
-    "lerna": "^3.20.2",
-    "mocha": "^6.2.2",
-    "nyc": "^15.0.0",
-    "ts-node": "^8.5.4",
-    "typescript": "^3.7.4"
+    "lerna": "^3.22.1",
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
   }
 }

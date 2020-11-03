@@ -1,7 +1,9 @@
 {
   "name": "@i18n-chain/core",
   "version": "1.0.0",
-  "main": "./build/index.js",
+  "main": "src/index.ts",
+  "module": "es/index.js",
+  "types": "src/index.ts",
   "keywords": [
     "i18n",
     "i18n-chain",
@@ -11,14 +13,22 @@
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
   "scripts": {
-    "prepublishOnly": "cp -f ./package.json ./build",
-    "build": "rm -rf ./build && tsc && mv ./build/src ./build/build && cp README.md ./package.json ./build"
+    "build": "sh ../../scripts/build.sh",
+    "prepublishOnly": "yarn run build",
+    "tsc": "../../node_modules/.bin/tsc"
   },
   "dependencies": {
-    "tslib": "^1.10.0"
+    "tslib": "2.0.3"
   },
   "publishConfig": {
     "access": "public",
     "directory": "build"
-  }
+  },
+  "files": [
+    "lib",
+    "es",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ]
 }

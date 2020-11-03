@@ -1,7 +1,9 @@
 {
   "name": "@i18n-chain/react",
   "version": "1.0.0",
-  "main": "./build/index.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
   "keywords": [
     "react-i18n",
     "i18n-typescript",
@@ -11,16 +13,18 @@
   "author": "范文华 <531362022@qq.com>",
   "license": "MIT",
   "scripts": {
-    "prepublishOnly": "cp -f ./package.json ./build",
-    "build": "rm -rf ./build && tsc && mv ./build/src ./build/build && cp README.md ./package.json ./build"
+    "build": "sh ../../scripts/build.sh",
+    "prepublishOnly": "yarn run build",
+    "tsc": "../../node_modules/.bin/tsc",
+    "relink": "bash ../../scripts/relink.sh"
   },
   "peerDependencies": {
-    "react": ">= 15.3.0"
+    "react": ">= 16.8.0"
   },
   "dependencies": {
     "@i18n-chain/core": "1.0.0",
-    "hoist-non-react-statics": "^3.3.1",
-    "tslib": "^1.10.0"
+    "hoist-non-react-statics": "3.3.2",
+    "tslib": "2.0.3"
   },
   "devDependencies": {
     "@types/hoist-non-react-statics": "^3.3.1",
@@ -29,5 +33,12 @@
   "publishConfig": {
     "access": "public",
     "directory": "build"
-  }
+  },
+  "files": [
+    "lib",
+    "es",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ]
 }
