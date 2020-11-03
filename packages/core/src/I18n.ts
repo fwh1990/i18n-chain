@@ -115,6 +115,13 @@ export class I18n<U extends object = object, T = object> {
     };
   }
 
+  /**
+   * @see translate()
+   */
+  public t(key: string): any {
+    return this.translate(key);
+  }
+
   public translate(key: string): any {
     if (this.caches[key]) {
       return this.caches[key];
@@ -125,9 +132,7 @@ export class I18n<U extends object = object, T = object> {
     let result = this.chain[firstProperty];
 
     if (properties.length) {
-      let index = 0;
-
-      for (; index < properties.length; ++index) {
+      for (let index = 0; index < properties.length; ++index) {
         result = result[properties[index]];
 
         if (result === undefined) {
