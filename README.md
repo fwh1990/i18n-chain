@@ -111,7 +111,7 @@ i18n.locale('zh');
 const key = i18n.literal.button.submit;
 key === 'button.submit' // true
 
-const value = i18n.translate(str);
+const value = i18n.translate(key);
 value === 'Submit' // true
 ```
 酷，带有提示的字符串模板也重新拥有了灵魂，不必再担心会写错了，让IDE和TS去处理吧。
