@@ -5,12 +5,12 @@ import { hook } from './hook';
 
 type I18nInstance<U extends object, T = object> = I18n<U, T> & {
   use: () => I18n<U, T>['chain'];
-  hoc: <P extends InjectedI18nProps<I18n<U, T>>>(WrappedComponent: ComponentClass<P>) => FC<P & InjectedI18nProps<I18n<U, T>>>;
+  hoc: <P extends InjectedI18nProps<I18n<U, T>>>(WrappedComponent: ComponentClass<P>) => FC<Omit<P, 'chain'>>;
 }
 
 export function createI18n<U extends object, T = Locale<U>>(config: I18nConfig<U>): I18nInstance<U, T> {
   const i18n = original<U, T>(config);
-  // @ts-expect-error
+  // @ts-ignore
   const enhanced: I18nInstance<U, T> = i18n;
   enhanced.use = () => hook(i18n);
   enhanced.hoc = hoc(i18n);
