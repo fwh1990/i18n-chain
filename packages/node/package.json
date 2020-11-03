@@ -1,6 +1,6 @@
 {
   "name": "@i18n-chain/node",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "lib/index.d.ts",
@@ -19,7 +19,7 @@
     "relink": "bash ../../scripts/relink.sh"
   },
   "dependencies": {
-    "@i18n-chain/core": "2.0.0-alpha.3"
+    "@i18n-chain/core": "2.0.0"
   },
   "publishConfig": {
     "access": "public",
