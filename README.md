@@ -207,9 +207,12 @@ export default App;
 
 ```typescript jsx
 import React, { PureComponent } from 'react';
+import { InjectedI18nProps } from '@i18n-chain/react';
 import i18n from '../i18n';
 
-class App extends PureComponent {
+type Props = InjectedI18nProps<typeof i18n>;
+
+class App extends PureComponent<Props> {
   render() {
     const { chain } = this.props;
 
