@@ -224,5 +224,5 @@ class App extends PureComponent<Props> {
 export default i18n.hoc(App);
 ```
 
-# 案例
-[React I18n](https://github.com/easy-demo/react-i18n-demo)
+# 在线Demo
+[CodeSandbox](https://codesandbox.io/s/sleepy-dream-s7uqh)
