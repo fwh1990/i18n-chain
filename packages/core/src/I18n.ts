@@ -123,6 +123,11 @@ export class I18n<U extends object = object, T = object> {
   }
 
   public translate(key: string): any {
+    // May be types which leak method `split()`
+    if (typeof key !== 'string') {
+      return key;
+    }
+
     if (this.caches[key]) {
       return this.caches[key];
     }
