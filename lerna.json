@@ -13,7 +13,7 @@
     "**/.gitignore",
     "**/*.md"
   ],
-  "version": "2.0.0",
+  "version": "2.0.1",
   "exact": true,
   "registry": "https://registry.npmjs.org"
 }
