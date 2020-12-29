@@ -189,3 +189,14 @@ it ('can get literal', () => {
   expect(i18n.chain.name).to.equal('English');
   expect(i18n.t(i18n.literal.name)).to.equal('English');
 });
+
+it ('translate nothing when key is not string', () => {
+  const obj = {};
+
+  // @ts-expect-error
+  expect(i18n.t(undefined)).to.equal(undefined);
+  // @ts-expect-error
+  expect(i18n.t(123)).to.equal(123);
+  // @ts-expect-error
+  expect(i18n.t(obj)).to.equal(obj);
+});
