@@ -2,6 +2,11 @@
 
 我更喜欢有提示的代码，利用`typescript`，我发明了一种使用链式操作的i18n组件，并拥有所有提示，就类似 `i18n.common.something.success` 这种，代码可以自动补全，保证不会写错。
 
+[![License](https://img.shields.io/github/license/fwh1990/i18n-chain)](https://github.com/fwh1990/i18n-chain/blob/master/LICENSE)
+[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/fwh1990/i18n-chain/CI/master)](https://github.com/fwh1990/i18n-chain/actions)
+[![Codecov](https://img.shields.io/codecov/c/github/fwh1990/i18n-chain)](https://codecov.io/gh/fwh1990/i18n-chain)
+
+
 # 兼容性
 | IE | Edge | Chrome | Firefox | Safari | Node |
 | -- | -- | -- | -- | -- | -- |
